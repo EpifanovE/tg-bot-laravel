@@ -1,0 +1,97 @@
+.CustomSelect {
+    position: relative;
+
+    &__Input {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        min-height: calc(1.5em + 0.75rem + 2px);
+        padding: .375rem 36px 0 .75rem;
+        font-size: .875rem;
+        font-weight: 400;
+        line-height: 1.5;
+        background-clip: padding-box;
+        border: 1px solid;
+        color: #768192;
+        background-color: #fff;
+        border-color: #d8dbe0;
+        border-radius: .25rem;
+        position: relative;
+
+        &_reset {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+    }
+
+    &_disabled &__Input {
+        background-color: #d8dbe0;
+    }
+
+    &__List {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 200px;
+        background-color: #fff;
+        padding: 0;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        border: 1px solid;
+        color: #768192;
+        border-color: #d8dbe0;
+        border-radius: .25rem;
+        z-index: 99;
+    }
+
+    &__Choice {
+        padding: 8px 16px;
+
+        &:hover {
+            background-color: #eee;
+            cursor: pointer;
+        }
+
+        &_selected {
+            background-color: #ddd;
+        }
+    }
+
+    &__Item {
+        background-color: #ddd;
+        padding: 0 8px;
+        border-radius: .25rem;
+        margin: 0 4px .375rem 0;
+    }
+
+    &__Arrow {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        color: #ced2d8;
+    }
+
+    &__Label {
+        display: inline-block;
+        margin-bottom: .5rem;
+    }
+
+    &__Reset {
+        background-color: #fff;
+        border: 1px solid;
+        border-color: #d8dbe0;
+        border-top-right-radius: .25rem;
+        border-bottom-right-radius: .25rem;
+        border-left: none;
+        height: 100%;
+        padding: 6px 12px;
+        color: #ced2d8;
+    }
+
+    &_required &__Label:after {
+        content:"*";
+        margin-left: 5px;
+        color:#c0392b;
+    }
+}

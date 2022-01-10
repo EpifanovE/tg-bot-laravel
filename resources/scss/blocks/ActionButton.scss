@@ -1,0 +1,9 @@
+.ActionButton {
+
+    &__Text {
+        display: none;
+        @media (min-width: 1400px){
+            display: inline-block;
+        }
+    }
+}

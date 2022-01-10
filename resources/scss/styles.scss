@@ -1,0 +1,70 @@
+@import "blocks/spinner";
+@import "blocks/Dummy";
+@import "blocks/Overlay";
+@import "blocks/MoveButton";
+@import "blocks/ActionButton";
+
+html {
+    font-size: 16px;
+}
+
+.c-avatar {
+    overflow: hidden;
+}
+
+.c-avatar-empty {
+    border: 1px solid;
+
+    & .c-avatar-img {
+        margin-top: 6px;
+    }
+}
+
+
+.Button {
+    display: inline-flex;
+    align-items: center;
+
+    &.btn-sm &__Spinner {
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+}
+
+.nav-tabs .nav-item .nav-link.active {
+    background-color: #FFFFFF;
+}
+
+.tab-content {
+    border: 1px solid #c4c9d0;
+    border-top: transparent;
+}
+
+.tab-content .tab-pane {
+    background-color: #FFF;
+    height: auto;
+    padding: 15px;
+}
+
+a:not(.c-header-nav-link,.c-sidebar-nav-link,.btn,.dropdown-item) {
+    color: #2980b9;
+    border-bottom: 1px dotted transparent;
+    transition: color, border-color .3s ease-in-out;
+}
+a:hover:not(.c-header-nav-link,.c-sidebar-nav-link,.btn,.dropdown-item) {
+    color: #3498db;
+    text-decoration: none;
+    border-color: #3498db;
+}
+
+table {
+    font-size: 1rem;
+}
+
+.form-group.required .form-label:after {
+    content:"*";
+    margin-left: 5px;
+    color:#c0392b;
+}
+
+@import "blocks/CustomSelect";
