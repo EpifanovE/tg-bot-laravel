@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect, useParams} from "react-router-dom";
@@ -9,10 +9,10 @@ import {IAppState} from "../../../store/reducers/appReducer";
 import {passwordSetRequest} from "../../../store/actions/adminActions";
 import InputGroupText from "../../inputs/InputGroupText";
 import TextInput from "../../inputs/TextInput";
-import {useForm} from "../../../hooks/useForm";
 import Button from "../../layout/Button";
 import Col from "../../layout/Ui/Col";
 import Icon from "../../layout/Icon";
+import {toast} from "react-toastify";
 
 const ResetPasswordReset = (props) => {
     const {t} = useTranslation();
@@ -22,24 +22,19 @@ const ResetPasswordReset = (props) => {
     const {isLoggedIn} = useSelector<IRootState, IAdminState>(state => state.admin);
     const {submitting} = useSelector<IRootState, IAppState>(state => state.app);
 
-    const rules = {
-        password: ["required", "min:8", ],
-        password_confirmation: ["equals:password",],
-    };
-
-    const {values, onBlur, errors, isValid, setValue, changed, validate} = useForm<{
-        password: string,
-        password_confirmation: string
-    }>(rules);
-
-    const {password, password_confirmation} = values;
+    const [password, setPassword] = useState("");
+    const [password_confirmation, setPasswordConfirmation] = useState("");
 
     const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
 
-        validate();
+        if (!password) {
+            toast.error(t("errors.fieldIsEmpty", {field: t("password")}));
+            return;
+        }
 
-        if (!isValid) {
+        if (!password_confirmation) {
+            toast.error(t("errors.fieldIsEmpty", {field: t("password_confirmation")}));
             return;
         }
 
@@ -51,7 +46,14 @@ const ResetPasswordReset = (props) => {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue({fieldName: e.target.name, value: e.target.value})
+        switch (e.target.name) {
+            case "password" :
+                setPassword(e.target.value);
+                break;
+            case "password_confirmation":
+                setPasswordConfirmation(e.target.value);
+                break;
+        }
     };
 
     if (isLoggedIn) {
@@ -71,9 +73,6 @@ const ResetPasswordReset = (props) => {
                             <TextInput
                                 placeholder={t("password")}
                                 onChange={handleChange}
-                                onBlur={onBlur}
-                                touched={changed.includes("password")}
-                                errors={errors.password || []}
                                 value={password || ""}
                                 name="password"
                                 prepend={<InputGroupText><Icon name="lock-locked"/></InputGroupText>}
@@ -84,9 +83,6 @@ const ResetPasswordReset = (props) => {
                             <TextInput
                                 placeholder={t("passwordConfirm")}
                                 onChange={handleChange}
-                                onBlur={onBlur}
-                                touched={changed.includes("password_confirmation")}
-                                errors={errors.password_confirmation || []}
                                 value={password_confirmation || ""}
                                 name="password_confirmation"
                                 prepend={<InputGroupText><Icon name="lock-locked"/></InputGroupText>}

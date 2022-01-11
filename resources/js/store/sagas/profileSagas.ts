@@ -3,11 +3,7 @@ import {PROFILE_REQUEST, PROFILE_SAVE_REQUEST} from "../constants/adminConstants
 import ApiProvider from "../../api/apiProvider";
 import {profileSuccess, profileFail, profileSaveSuccess, profileSaveFail} from "../actions/adminActions";
 import {IProfileResponse} from "../../types/api";
-import {IRootState} from "../reducers/rootReducer";
-import {IAdminState} from "../reducers/adminReducer";
 import {saveSuccessAlert} from "../../utils/alerts";
-
-const getState = (state: IRootState) => state.admin;
 
 export function* getProfile(action) {
     try {
@@ -24,8 +20,7 @@ export function* getProfileSaga() {
 
 export function* saveProfile(action) {
     try {
-        const adminState: IAdminState = yield select(getState);
-        const {name, email, password, password_confirmation} = adminState;
+        const {username: name, email, password, password_confirmation} = action.payload;
 
         const data = {name, email};
 
@@ -41,7 +36,7 @@ export function* saveProfile(action) {
         });
 
         yield call(saveSuccessAlert);
-        yield put(profileSaveSuccess());
+        yield put(profileSaveSuccess({name: response.data.data.name, email: response.data.data.email}));
 
     } catch (e) {
         yield put(profileSaveFail());

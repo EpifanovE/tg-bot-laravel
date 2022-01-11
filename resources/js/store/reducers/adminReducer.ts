@@ -87,6 +87,8 @@ const adminReducer = (state: IAdminState = initialState, action) => {
         case PROFILE_SAVE_SUCCESS :
             return {
                 ...state,
+                name: action.payload.name,
+                email: action.payload.email,
                 isDirty: false,
                 saving: false
             };

@@ -4,90 +4,85 @@ import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {IRootState} from "../../../store/reducers/rootReducer";
 import {IAdminState} from "../../../store/reducers/adminReducer";
-import {changeProfileField, changeProfileFields, profileSaveRequest} from "../../../store/actions/adminActions";
+import {profileSaveRequest} from "../../../store/actions/adminActions";
 import Button from "../../layout/Button";
 import Icon from "../../layout/Icon";
 import TextInput from "../../inputs/TextInput";
 import InputGroupText from "../../inputs/InputGroupText";
-import SelectInput from "../../inputs/SelectInput";
-import {useForm} from "../../../hooks/useForm";
+import {toast} from "react-toastify";
 
 const Profile = (props) => {
     const {t} = useTranslation();
     const dispatch = useDispatch();
 
     const data = useSelector<IRootState, IAdminState>(state => state.admin);
-    const {locale, saving, name: storeName, email: storeEmail} = data;
+    const {saving, name: storeName, email: storeEmail} = data;
 
-    const rules = {
-        name: ["required",],
-        email: ["required",],
-        password: ["nullable", "min:8",],
-        password_confirmation: ["equals:password",],
-    };
-
-    const {values, onBlur, errors, validate, isValid, setValue, changed} = useForm<{
-        name: string,
-        email: string,
-        password?: string,
-        password_confirmation?: string
-    }>(rules, {
-        name: storeName || "",
-        email: storeEmail || "",
-        password: "",
-        password_confirmation: "",
-    });
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [password_confirmation, setPasswordConfirmation] = useState("");
 
     useEffect(() => {
-        dispatch(changeProfileFields(values))
-    }, [values]);
+        setUsername(storeName || "");
+    }, [storeName]);
 
-    const {name, email, password, password_confirmation} = values;
-
-    const handleChangeLocale = (value: Array<string>) => {
-        dispatch(changeProfileField({fieldName: 'locale', value: value[0]}));
-    };
+    useEffect(() => {
+        setEmail(storeEmail || "");
+    }, [storeEmail]);
 
     const handleSaveClick = (e: React.MouseEvent) => {
         e.preventDefault();
 
-        validate();
-
-        if (!isValid) {
+        if (!username) {
+            toast.error(t("errors.fieldIsEmpty", {field: t("username")}));
             return;
         }
 
-        dispatch(profileSaveRequest());
+        if (!email) {
+            toast.error(t("errors.fieldIsEmpty", {field: t("email")}));
+            return;
+        }
+
+        dispatch(profileSaveRequest({
+            username,
+            email,
+            password,
+            password_confirmation
+        }));
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue({fieldName: e.target.name, value: e.target.value})
-    };
-
-    const isTouched = (name: string) => {
-        return changed.includes(name)
+        switch (e.target.name) {
+            case "username" :
+                setUsername(e.target.value);
+                break;
+            case "email" :
+                setEmail(e.target.value);
+                break;
+            case "password" :
+                setPassword(e.target.value);
+                break;
+            case "password_confirmation":
+                setPasswordConfirmation(e.target.value);
+                break;
+        }
     };
 
     const profileTabContent = () => {
         return <>
             <TextInput
                 label={t("username")}
-                value={name || ""}
+                value={username}
                 onChange={handleChange}
-                onBlur={onBlur}
-                touched={isTouched("name")}
-                errors={errors.name || []}
-                name="name"
+                name="username"
                 prepend={<InputGroupText><Icon name="user"/></InputGroupText>}
             />
 
             <TextInput
                 label={t("email")}
-                value={email || ""}
+                value={email}
                 onChange={handleChange}
-                onBlur={onBlur}
-                touched={isTouched("email")}
-                errors={errors.email || []}
                 name="email"
                 prepend={<InputGroupText><Icon name="envelope-closed"/></InputGroupText>}
             />
@@ -95,10 +90,7 @@ const Profile = (props) => {
             <TextInput
                 label={t("new_password")}
                 onChange={handleChange}
-                value={password || ""}
-                onBlur={onBlur}
-                touched={isTouched("password")}
-                errors={errors.password || []}
+                value={password}
                 name="password"
                 prepend={<InputGroupText><Icon name="lock-locked"/></InputGroupText>}
                 type="password"
@@ -106,11 +98,8 @@ const Profile = (props) => {
 
             <TextInput
                 label={t("passwordConfirm")}
-                value={password_confirmation || ""}
+                value={password_confirmation}
                 onChange={handleChange}
-                onBlur={onBlur}
-                touched={isTouched("password_confirmation")}
-                errors={errors.password_confirmation || []}
                 name="password_confirmation"
                 prepend={<InputGroupText><Icon name="lock-locked"/></InputGroupText>}
                 type="password"
@@ -118,16 +107,6 @@ const Profile = (props) => {
         </>
     };
 
-    const settingsTabContent = () => {
-        return <>
-            <SelectInput
-                label={t("locale")}
-                value={[locale]}
-                onChange={handleChangeLocale}
-                choices={{ru: t("localeRu"), en: t("localeEn")}}
-            />
-        </>
-    };
 
     return <div className="row">
         <div className="col-12">
@@ -136,7 +115,6 @@ const Profile = (props) => {
                     color="primary"
                     className="d-flex align-items-center"
                     type="button"
-                    disabled={!isValid}
                     onClick={handleSaveClick}
                     spinner={saving}
                 >
@@ -151,11 +129,6 @@ const Profile = (props) => {
                         label: t("profile"),
                         component: profileTabContent()
                     },
-                    // {
-                    //     id: "2",
-                    //     label: t("settings"),
-                    //     component: settingsTabContent()
-                    // },
                 ]}
             />
         </div>

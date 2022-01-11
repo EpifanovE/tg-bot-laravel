@@ -3,6 +3,8 @@ import {LOGIN_REQUEST, LOGOUT_REQUEST} from "../constants/adminConstants";
 import ApiProvider from "../../api/apiProvider";
 import {logoutSuccess, profileSuccess} from "../actions/adminActions";
 import {setLogoutLoading, setSubmitting} from "../actions/appActions";
+import {getErrorResponseMessages} from "../../utils/errors";
+import {showAlerts} from "../../utils/alerts";
 
 export function* login(action) {
     try {
@@ -11,7 +13,7 @@ export function* login(action) {
         yield call([ApiProvider, "refreshCsrf"]);
         yield put(profileSuccess(response.data));
     } catch (e) {
-
+        showAlerts(getErrorResponseMessages(e))
     } finally {
         yield put(setSubmitting(false));
     }

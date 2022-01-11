@@ -86,12 +86,12 @@ export const changeProfileFields = (data: {[key: string]: string}) => {
     return {type: PROFILE_CHANGE_FIELDS, payload: data};
 };
 
-export const profileSaveRequest = () => {
-    return {type: PROFILE_SAVE_REQUEST};
+export const profileSaveRequest = (data: {username: string, email: string, password?: string, password_confirmation?: string}) => {
+    return {type: PROFILE_SAVE_REQUEST, payload: data};
 };
 
-export const profileSaveSuccess = () => {
-    return {type: PROFILE_SAVE_SUCCESS};
+export const profileSaveSuccess = (data: {name: string, email: string}) => {
+    return {type: PROFILE_SAVE_SUCCESS, payload: data};
 };
 
 export const profileSaveFail = () => {

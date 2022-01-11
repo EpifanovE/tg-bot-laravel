@@ -45,9 +45,9 @@ export function* passwordSet(action) {
             method: "post",
             config: {data: action.payload}
         });
+        successAlert(response.data.message);
         yield put(passwordSetSuccess());
         yield put(passwordResetSuccess());
-        yield put(getProfile());
     } catch (e) {
         yield put(passwordSetFail());
     } finally {

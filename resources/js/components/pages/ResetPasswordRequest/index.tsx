@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
@@ -7,11 +7,11 @@ import {IRootState} from "../../../store/reducers/rootReducer";
 import {IAdminState} from "../../../store/reducers/adminReducer";
 import {IAppState} from "../../../store/reducers/appReducer";
 import {passwordResetRequest} from "../../../store/actions/adminActions";
-import {useForm} from "../../../hooks/useForm";
 import TextInput from "../../inputs/TextInput";
 import InputGroupText from "../../inputs/InputGroupText";
 import Button from "../../layout/Button";
 import Col from "../../layout/Ui/Col";
+import {toast} from "react-toastify";
 
 const ResetPasswordRequest = (props) => {
     const {t} = useTranslation();
@@ -20,20 +20,13 @@ const ResetPasswordRequest = (props) => {
     const {isLoggedIn} = useSelector<IRootState, IAdminState>(state => state.admin);
     const {submitting} = useSelector<IRootState, IAppState>(state => state.app);
 
-    const rules = {
-        email: ["required", ],
-    };
-
-    const {values, setValue, onBlur, errors, changed, validate, isValid} = useForm<{ email: string }>(rules);
-
-    const {email} = values;
+    const [email, setEmail] = useState("");
 
     const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
         e.preventDefault();
 
-        validate();
-
-        if (!isValid) {
+        if (!email) {
+            toast.error(t("errors.fieldIsEmpty", {field: t("email")}));
             return;
         }
 
@@ -45,7 +38,7 @@ const ResetPasswordRequest = (props) => {
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValue({fieldName: e.target.name, value: e.target.value})
+        setEmail(e.target.value)
     };
 
     if (isLoggedIn) {
@@ -65,10 +58,7 @@ const ResetPasswordRequest = (props) => {
                             <TextInput
                                 placeholder="Email"
                                 onChange={handleChange}
-                                onBlur={onBlur}
-                                touched={changed.includes("email")}
-                                errors={errors.email || []}
-                                value={email || ""}
+                                value={email}
                                 name="email"
                                 prepend={<InputGroupText><i className="c-icon cil-user"/></InputGroupText>}
                                 required={true}

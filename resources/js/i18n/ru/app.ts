@@ -8,6 +8,7 @@ export default {
     password: "Пароль",
     new_password: "Новый пароль",
     passwordConfirm: "Повторите пароль",
+    password_confirmation: "Подтверждение пароля",
     account: "Кабинет",
     resetPassword: "Сброс пароля",
     resetPasswordText: "Укажите ваш email.",
@@ -81,6 +82,9 @@ export default {
         textarea: "Область текста",
         number: "Число",
         checkbox: "Чекбокс",
+    },
+    errors: {
+        fieldIsEmpty: "{{field}} не может быть пустым.",
     },
     management: "Управление",
     customers: "Подписчики",
