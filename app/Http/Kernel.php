@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\Status;
+use App\Http\Middleware\SubscriberMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -34,6 +35,10 @@ class Kernel extends HttpKernel
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
+
+        'bot' => [
+            'bot_subscriber',
+        ],
     ];
 
     protected $routeMiddleware = [
@@ -47,5 +52,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'status' => Status::class,
+        'bot_subscriber' => SubscriberMiddleware::class,
     ];
 }

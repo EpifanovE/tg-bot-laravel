@@ -25,26 +25,22 @@ class Init extends Command
 
     public function handle()
     {
+        $permissions = array_map(function ($permissionData) {
+            return $permissionData["code"];
+        }, config("authorization.permissions"));
+
         $adminRole = $this->roleService->create([
             "name" => "Администратор",
             "key" => "admin",
             "built_in" => true,
-            "permissions" => [
-                "admins.manage",
-                "admins.view",
-                "roles.manage",
-                "roles.view",
-                "subscribers.view",
-                "subscribers.manage",
-                "settings.view",
-                "settings.manage",
-            ],
+            "permissions" => $permissions,
         ]);
 
         $admin = $this->adminService->create([
             "name" => $this->argument("name"),
             "email" => $this->argument("email"),
             "password" => !empty($this->argument("password")) ? $this->argument("password") : "12345678",
+            "built_in" => true,
         ]);
 
         $admin->roles()->attach($adminRole);

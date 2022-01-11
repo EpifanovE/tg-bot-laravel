@@ -22,9 +22,15 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace("App\Http\Api\Controllers")
                 ->group(base_path('routes/api.php'));
 
+            Route::prefix('bot')
+                ->middleware('bot')
+                ->namespace("App\Http\Controllers")
+                ->group(base_path('routes/bot.php'));
+
             Route::middleware('web')
-                ->namespace($this->namespace)
+                ->namespace("App\Http\Controllers")
                 ->group(base_path('routes/web.php'));
+
         });
     }
 
