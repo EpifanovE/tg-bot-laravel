@@ -11,7 +11,10 @@ class CreateSubscribersTable extends Migration
         Schema::create('subscribers', function (Blueprint $table) {
             $table->id();
             $table->bigInteger("tid")->unsigned();
-            $table->string("name", 1024)->nullable();
+            $table->string("first_name", 1024)->nullable();
+            $table->string("last_name", 1024)->nullable();
+            $table->string("username", 1024)->nullable();
+            $table->string("language_code", 16)->nullable();
             $table->boolean("blocked")->default(false);
             $table->timestamps();
         });

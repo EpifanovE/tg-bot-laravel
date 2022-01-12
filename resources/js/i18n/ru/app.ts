@@ -109,4 +109,10 @@ export default {
     type: "Тип",
     content: "Содержимое",
     enabled: "Включено",
+    day: "День",
+    week: "Неделя",
+    month: "Месяц",
+    year: "Год",
+    customPeriod: "Произвольно",
+    newSubscribers: "Новые подписчики",
 };

@@ -7,22 +7,18 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class SubscriberFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
     protected $model = Subscriber::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array
-     */
     public function definition()
     {
         return [
-            //
+            "tid" => $this->faker->numberBetween(100, 999),
+            "first_name" => $this->faker->name,
+            "last_name" => $this->faker->lastName,
+            "username" => $this->faker->userName,
+            "language_code" => "ru",
+            "blocked" => false,
+            "created_at" => $this->faker->dateTimeBetween("-1 year", now()),
         ];
     }
 }

@@ -11,6 +11,8 @@ Route::post('/password/reset', 'Auth\ForgotPasswordController@reset')
 
 Route::get('/refresh-csrf', 'Auth\AuthController@csrfToken')->name('csrf');
 
+Route::get("/test", "DashboardController@test");
+
 Route::middleware(['auth:sanctum', 'status'])->group(
     function () {
         Route::post('logout', 'Auth\AuthController@logout')->name('logout');
@@ -24,4 +26,6 @@ Route::middleware(['auth:sanctum', 'status'])->group(
         Route::get("/permissions", "RoleController@permissions")->name("permissions.index");
 
         Route::apiManyResource('settings', 'SettingController');
+
+        Route::get("/analytics/newSubscribers", "AnalyticsController@newSubscribers");
     });

@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Events\UsageEvent;
 use App\Models\Subscriber\Subscriber;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SubscriberMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
-
-
         $data = $request->all();
         $subscriber = null;
 
@@ -27,11 +26,16 @@ class SubscriberMiddleware
         if ($this->checkForSubscriber($data, $key)) {
             $id = $data[$key]["from"]["id"];
 
-            $subscriber = Subscriber::firstOrCreate(
-                ["id" => $id],
-                []);
+            $optional = [
+                "first_name" => $data[$key]["from"]["first_name"] ?? "",
+                "last_name" => $data[$key]["from"]["last_name"] ?? "",
+                "username" => $data[$key]["from"]["username"] ?? "",
+                "language_code" => $data[$key]["from"]["language_code"] ?? "",
+            ];
 
-//            event(new UsageEvent($subscriber));
+            $subscriber = Subscriber::firstOrCreate(
+                ["tid" => $id],
+                $optional);
         }
 
         $request->attributes->add(["subscriber" => $subscriber]);

@@ -18,7 +18,7 @@ class Home
                 "keyboard" => [
                     [
                         KeyboardButton::create([
-                            "text" => trans("bot.buttons.taxes"),
+                            "text" => trans("bot.buttons.button"),
                         ]),
                     ]
                 ],
