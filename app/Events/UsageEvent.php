@@ -13,9 +13,9 @@ class UsageEvent
 
     protected Subscriber $subscriber;
     protected string $code;
-    protected array $payload;
+    protected ?string $payload = null;
 
-    public function __construct(Subscriber $subscriber, string $code, array $payload = [])
+    public function __construct(Subscriber $subscriber, string $code, ?string $payload = null)
     {
         $this->subscriber = $subscriber;
         $this->code = $code;
@@ -32,7 +32,7 @@ class UsageEvent
         return $this->code;
     }
 
-    public function getPayload(): array
+    public function getPayload(): ?string
     {
         return $this->payload;
     }

@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Api\Controllers;
 
 use App\Http\Api\Requests\Analytics\PeriodRequest;
+use App\Models\LogEvent\LogEvent;
 use App\Models\Subscriber\Subscriber;
 use App\Services\Chart\ChartData;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class AnalyticsController extends Controller
 {
@@ -15,7 +17,8 @@ class AnalyticsController extends Controller
     {
         $requestData = $request->validated();
 
-        $chartData = new ChartData(Subscriber::query());
+        $chartData = new ChartData(LogEvent::subscribe());
+        $chartData->setTable("log_events");
 
         if (!empty($requestData["from"]) && !empty($requestData["to"]) && !empty($requestData["step"])) {
             $chartData->period(Carbon::parse($requestData["from"]), Carbon::parse($requestData["to"]), $requestData["step"] ?? null);

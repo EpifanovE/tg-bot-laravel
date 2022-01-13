@@ -5,6 +5,6 @@ return [
         "button" => "Кнопка",
     ],
     "events" => [
-        "command_start" => "Комманда /start",
+        "c_start" => "Комманда /start",
     ],
 ];

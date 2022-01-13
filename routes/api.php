@@ -11,7 +11,7 @@ Route::post('/password/reset', 'Auth\ForgotPasswordController@reset')
 
 Route::get('/refresh-csrf', 'Auth\AuthController@csrfToken')->name('csrf');
 
-Route::get("/test", "DashboardController@test");
+Route::get("/test", "AnalyticsController@test");
 
 Route::middleware(['auth:sanctum', 'status'])->group(
     function () {

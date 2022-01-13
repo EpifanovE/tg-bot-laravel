@@ -85,6 +85,19 @@ const Sidebar = (props) => {
                     icon="cog"
                 />
             }
+
+            {
+                (adminCan("analytics.view")) &&
+                <DropdownItem
+                    label={t("analytics")}
+                    icon="chart"
+                    isOpen={openedMenuItems.includes("analytics")}
+                    code="analytics"
+                    onClick={handleDropdownClick}
+                >
+                    <SidebarItem to="/subscribers-analytics" label={t("newSubscribers")} icon="people" />
+                </DropdownItem>
+            }
         </ul>
         <button className="c-sidebar-minimizer sidebar-toggler" type="button" onClick={handleMinimizedClick} />
     </div>

@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Events\UsageEvent;
 use App\Models\Subscriber\Subscriber;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class SubscriberMiddleware
 {

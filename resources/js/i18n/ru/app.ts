@@ -115,4 +115,5 @@ export default {
     year: "Год",
     customPeriod: "Произвольно",
     newSubscribers: "Новые подписчики",
+    analytics: "Аналитика",
 };

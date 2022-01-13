@@ -10,6 +10,7 @@ import Roles from "./components/pages/Roles/Roles";
 import Role from "./components/pages/Roles/Role";
 import Setting from "./components/pages/Settings/Setting";
 import Settings from "./components/pages/Settings/Settings";
+import NewSubscribers from "./components/pages/Analytics/NewSubscribers";
 
 export default () => {
 
@@ -112,6 +113,17 @@ export default () => {
                 {label: "settings"},
             ]
         }
+    );
+
+    routes.push(
+        {
+            path: '/subscribers-analytics',
+            component: NewSubscribers as any,
+            breadcrumbs: [
+                {label: "dashboard", url: "/"},
+                {label: "newSubscribers"},
+            ]
+        },
     );
 
     routes.push({

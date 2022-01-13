@@ -11,7 +11,7 @@ class CreateLogEventsTable extends Migration
         Schema::create('log_events', function (Blueprint $table) {
             $table->id();
             $table->string("code", 128);
-            $table->json("payload")->nullable();
+            $table->string("payload", 1024)->nullable();
             $table->bigInteger("subscriber_id")->unsigned();
             $table->timestamps();
             $table->dropColumn('updated_at');

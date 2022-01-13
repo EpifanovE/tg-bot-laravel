@@ -20,16 +20,23 @@ ChartJS.register(
 interface IMainChartProps {
     resource: string
     type: "line" | "bar"
-    period: "week" | "month" | "year"
+    period: Period
     periodBar?: boolean
     title?: string
     aspectRatio?: number
+    from?: Moment | string
+    to?: Moment | string
+    step?: "day" | "month"
 }
 
 
 export type Period = "week" | "month" | "year" | "customPeriod";
 
-const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: periodProp, title, aspectRatio}) => {
+export type Step = "day" | "month";
+
+const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: periodProp,
+                                            title, aspectRatio, from: fromProp,
+                                            to: toProp, step: stepProp}) => {
 
     const chartRef = useRef<ChartJS>(null);
 
@@ -41,11 +48,29 @@ const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: peri
     const [period, setPeriod] = useState<Period>();
     const [from, setFrom] = useState<Moment | string>(moment().startOf('month'));
     const [to, setTo] = useState<Moment | string>(moment());
-    const [step, setStep] = useState("day");
+    const [step, setStep] = useState<Step>("day");
 
     useEffect(() => {
         setPeriod(periodProp);
-    }, [])
+    }, [periodProp]);
+
+    useEffect(() => {
+        if (fromProp) {
+            setFrom(fromProp);
+        }
+    }, [fromProp]);
+
+    useEffect(() => {
+        if (toProp) {
+            setTo(toProp);
+        }
+    }, [toProp]);
+
+    useEffect(() => {
+        if (stepProp) {
+            setStep(stepProp);
+        }
+    }, [stepProp]);
 
     useEffect(() => {
 
@@ -116,7 +141,7 @@ const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: peri
     }
 
     const handleStepChange = (value: Array<string>) => {
-        setStep(value[0]);
+        setStep(value[0] as Step);
     }
 
     return <Card>

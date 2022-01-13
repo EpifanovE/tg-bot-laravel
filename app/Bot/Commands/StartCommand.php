@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Bot\Commands;
 
 use App\Bot\Screens\Home;
-use App\Events\UsageEvent;
 use App\Models\LogEvent\LogEvent;
+use App\Models\Subscriber\Subscriber;
 
 class StartCommand extends \WeStacks\TeleBot\Handlers\CommandHandler
 {
@@ -16,9 +16,7 @@ class StartCommand extends \WeStacks\TeleBot\Handlers\CommandHandler
 
     public function handle()
     {
-        $subscriber = request()->attributes->get("subscriber");
-
-        event(new UsageEvent($subscriber, LogEvent::COMMAND_START));
+        $this->subscriberHandle();
 
         $this->sendMessage([
             "text" => "Здравствуйте!\n\nПриветственное сообщение Laravel."
@@ -27,4 +25,34 @@ class StartCommand extends \WeStacks\TeleBot\Handlers\CommandHandler
         $screen = new Home();
         $screen->send($this);
     }
+
+    protected function subscriberHandle(): Subscriber
+    {
+        $text = $this->update->message->text;
+
+        $param = null;
+
+        if (strlen($text) > 7) {
+            $param = substr($text, 7, strlen($text));
+        }
+
+        /**
+         * @var Subscriber $subscriber
+         */
+        $subscriber = request()->attributes->get("subscriber");
+
+        $logEventParams = [
+            "code" => LogEvent::COMMAND_START,
+            "payload" => $param,
+        ];
+
+        if ($subscriber->events()->where("code", LogEvent::COMMAND_START)->count() === 0) {
+            $logEventParams["created_at"] = $subscriber->created_at;
+        }
+
+        $subscriber->events()->create($logEventParams);
+
+        return $subscriber;
+    }
+
 }

@@ -6,6 +6,7 @@ namespace App\Services\Chart;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class ChartData
 {
@@ -13,6 +14,8 @@ class ChartData
     const STEP_MONTH = 'month';
 
     protected string $dateFormat = 'd-m-Y';
+
+    protected ?string $tableName = null;
 
     protected string $property = 'created_at';
 
@@ -27,6 +30,16 @@ class ChartData
     public function __construct($builder)
     {
         $this->builder = $builder;
+    }
+
+    public function setTable(string $tableName)
+    {
+        $this->tableName = $tableName;
+    }
+
+    public function setProperty(string $property)
+    {
+        $this->property = $property;
     }
 
     public function period(Carbon $from, Carbon $to, $step = self::STEP_DAY)
@@ -79,8 +92,8 @@ class ChartData
     public function toArray()
     {
         $collection = $this->builder
-            ->whereDate($this->property, '>=', $this->from)
-            ->whereDate($this->property, '<=', $this->to)
+            ->whereDate(DB::raw($this->getFullProperty()), '>=', $this->from)
+            ->whereDate(DB::raw($this->getFullProperty()), '<=', $this->to)
             ->get()
             ->pluck($this->property)
             ->map(function ($item) {
@@ -155,5 +168,14 @@ class ChartData
         }
 
         return $array;
+    }
+
+    protected function getFullProperty(): string
+    {
+        if (!empty($this->tableName)) {
+            return $this->tableName . "." . $this->property;
+        }
+
+        return $this->property;
     }
 }

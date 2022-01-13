@@ -34,5 +34,9 @@ return [
             "group" => "subscribers",
             "code" => "subscribers.view",
         ],
+        [
+            "group" => "analytics",
+            "code" => "analytics.view",
+        ],
     ],
 ];
