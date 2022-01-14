@@ -7,6 +7,9 @@ import {Chart} from "react-chartjs-2";
 import Card from "../../Ui/Card/Card";
 import {useApi} from "../../../../hooks/useApi";
 import PeriodBar from "./PeriodBar";
+import {useDebouncedEffect} from "../../../../hooks/useDebounceEffect";
+import {errorAlert} from "../../../../utils/alerts";
+import {useTranslation} from "react-i18next";
 
 ChartJS.register(
     LinearScale,
@@ -27,6 +30,7 @@ interface IMainChartProps {
     from?: Moment | string
     to?: Moment | string
     step?: "day" | "month"
+    queryParams?: {[key: string] : string | Moment}
 }
 
 
@@ -36,9 +40,11 @@ export type Step = "day" | "month";
 
 const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: periodProp,
                                             title, aspectRatio, from: fromProp,
-                                            to: toProp, step: stepProp}) => {
+                                            to: toProp, step: stepProp, queryParams}) => {
 
     const chartRef = useRef<ChartJS>(null);
+
+    const {t} = useTranslation();
 
     const api = useApi();
 
@@ -49,6 +55,8 @@ const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: peri
     const [from, setFrom] = useState<Moment | string>(moment().startOf('month'));
     const [to, setTo] = useState<Moment | string>(moment());
     const [step, setStep] = useState<Step>("day");
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setPeriod(periodProp);
@@ -73,24 +81,42 @@ const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: peri
     }, [stepProp]);
 
     useEffect(() => {
+        fetchData();
+    }, [period, from, to, step]);
 
+    useDebouncedEffect(() => {
+        fetchData();
+    }, 500, [queryParams]);
+
+    const fetchData = () => {
         if (!period) return;
+
+        if (loading) return;
+
+        setLoading(true);
 
         let query = {}
 
-        if (period !== "customPeriod") {
-            query["key"] = period;
-        } else {
+        query["key"] = period;
+
+        if (period === "customPeriod") {
             query["from"] = from;
             query["to"] = to;
             query["step"] = step;
         }
 
-        const queryStr = stringify(query);
+        if (queryParams) {
+            query = {
+                ...query,
+                ...queryParams
+            }
+        }
+
+        const queryStr = "?" + stringify(query);
 
         api
             .request<{ labels: Array<string>, data: Array<number> }>({
-                endpoint: `analytics/${resource}?${queryStr}`,
+                endpoint: `analytics/${resource}${queryStr}`,
                 method: "get",
             })
             .then(response => {
@@ -98,9 +124,10 @@ const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: peri
 
                 setLabels(response.data.labels);
             })
-
-
-    }, [period, from, to, step]);
+            .finally(() => {
+                setLoading(false)
+            });
+    }
 
     const data = {
         labels,

@@ -6,48 +6,38 @@ namespace App\Http\Api\Controllers;
 
 use App\Http\Api\Requests\Analytics\PeriodRequest;
 use App\Models\LogEvent\LogEvent;
-use App\Models\Subscriber\Subscriber;
-use App\Services\Chart\ChartData;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Services\Analytics\AnalyticsService;
 
 class AnalyticsController extends Controller
 {
+    private AnalyticsService $service;
+
+    public function __construct(AnalyticsService $service)
+    {
+        $this->service = $service;
+    }
+
     public function newSubscribers(PeriodRequest $request)
     {
-        $requestData = $request->validated();
+        $this->authorize("view", LogEvent::class);
 
-        $chartData = new ChartData(LogEvent::subscribe());
-        $chartData->setTable("log_events");
-
-        if (!empty($requestData["from"]) && !empty($requestData["to"]) && !empty($requestData["step"])) {
-            $chartData->period(Carbon::parse($requestData["from"]), Carbon::parse($requestData["to"]), $requestData["step"] ?? null);
-        } elseif (!empty($requestData["key"])) {
-            $methodName = $this->getPeriodMethodName($requestData["key"]);
-
-            $chartData->$methodName();
-        }
-
-        $weekResult = $chartData->toArray();
+        $weekResult = $this->service->newSubscribers($request->validated());
 
         return response()->json($weekResult);
     }
 
-    private function getPeriodMethodName(string $key): string
+    public function newSubscribersTable(PeriodRequest $request)
     {
-        switch ($key) {
-            case "week" :
-                return "weekAgo";
-            case "year" :
-                return "yearAgo";
-            case "current_week" :
-                return "currentWeek";
-            case "current_month" :
-                return "currentMonth";
-            case "current_year" :
-                return "currentYear";
-            default :
-                return "monthAgo";
-        }
+        $this->authorize("view", LogEvent::class);
+
+        $data = $this->service->newSubscribersTable($request->validated());
+
+        return response()->json($data);
     }
+
+    public function test(PeriodRequest $request)
+    {
+
+    }
+
 }

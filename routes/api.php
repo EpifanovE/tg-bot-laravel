@@ -28,4 +28,5 @@ Route::middleware(['auth:sanctum', 'status'])->group(
         Route::apiManyResource('settings', 'SettingController');
 
         Route::get("/analytics/newSubscribers", "AnalyticsController@newSubscribers");
+        Route::get("/analytics/newSubscribersTable", "AnalyticsController@newSubscribersTable");
     });

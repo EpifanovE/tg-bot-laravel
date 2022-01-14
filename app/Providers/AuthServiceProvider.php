@@ -4,8 +4,10 @@ namespace App\Providers;
 
 use App\Models\Admin\Admin;
 use App\Models\Admin\Role;
+use App\Models\LogEvent\LogEvent;
 use App\Models\Setting\Setting;
 use App\Policies\AdminPolicy;
+use App\Policies\AnalyticsPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\SettingPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -18,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
         Admin::class => AdminPolicy::class,
         Role::class => RolePolicy::class,
         Setting::class => SettingPolicy::class,
+        LogEvent::class => AnalyticsPolicy::class,
     ];
 
     public function boot()

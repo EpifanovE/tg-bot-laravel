@@ -2,7 +2,7 @@ import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {setBreadcrumbs} from "../../../store/actions/appActions";
-import MainChart from "../../layout/Widgets/Charts/MainChart";
+import MainChart from "../../layout/Analytics/Charts/MainChart";
 import Row from "../../layout/Ui/Row";
 import Col from "../../layout/Ui/Col";
 

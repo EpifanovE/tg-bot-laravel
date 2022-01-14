@@ -67,11 +67,14 @@ export default {
         "settings.view" : "Просмотр настроек",
         "subscribers.manage" : "Управление подписчиками",
         "subscribers.view" : "Просмотр подписчиков",
+        "analytics.view": "Просмотр аналитики",
+        "analytics.manage": "Управление аналитикой",
     },
     permissionsGroups: {
         "admins" : "Администраторы",
         "settings" : "Настройки",
         "subscribers" : "Подписчики",
+        "analytics": "Аналитика",
     },
     actions: {
         choose: "Выберите",
@@ -116,4 +119,8 @@ export default {
     customPeriod: "Произвольно",
     newSubscribers: "Новые подписчики",
     analytics: "Аналитика",
+    eventPayload: "Параметр",
+    data: "Данные",
+    notDefined: "Не задано",
+    amount: "Количество",
 };

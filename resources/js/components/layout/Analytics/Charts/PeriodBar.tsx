@@ -37,7 +37,7 @@ const PeriodBar: FC<IPeriodBarProps> = ({
         return `btn ${periodKey === value ? 'btn btn-secondary' : 'btn-outline-secondary'}`
     }
 
-    return <div className={`d-flex`}>
+    return <div className={`d-flex${className ? ' ' + className : ''}`}>
         <div className="btn-group" role="group" aria-label="Basic example">
             <button type="button" className={`${getButtonClass('week')}`} data-value={`week`}
                     onClick={handleClick}>{t("week")}</button>
@@ -50,7 +50,7 @@ const PeriodBar: FC<IPeriodBarProps> = ({
         </div>
         {
             value === "customPeriod" &&
-            <div className={`d-flex ml-4`}>
+            <div className={`d-flex align-items-center ml-4`}>
 
                 <Datetime
                     value={from}
@@ -60,6 +60,8 @@ const PeriodBar: FC<IPeriodBarProps> = ({
                     className={`mr-2`}
                     onChange={onFromChange}
                 />
+
+                <span className={`mr-2`}>-</span>
 
                 <Datetime
                     value={to}

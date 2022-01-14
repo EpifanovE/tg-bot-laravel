@@ -38,5 +38,9 @@ return [
             "group" => "analytics",
             "code" => "analytics.view",
         ],
+        [
+            "group" => "analytics",
+            "code" => "analytics.manage",
+        ],
     ],
 ];

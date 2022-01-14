@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Api\Controllers;
 
 use App\Models\Subscriber\Subscriber;
-use App\Services\Chart\ChartData;
+use App\Services\Analytics\ChartData;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller

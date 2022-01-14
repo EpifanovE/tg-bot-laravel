@@ -24,11 +24,15 @@ class PeriodRequest extends FormRequest
                 "current_week",
                 "current_month",
                 "current_year",
+                "customPeriod",
             ]),
             ],
             "from" => ["nullable", "string",],
             "to" => ["nullable", "string",],
             "step" => ["nullable", Rule::in(["day", "month",])],
+            "payload" => ["string", "nullable",],
+            "sortBy" => ["string", "nullable",],
+            "sortDirection" => ["string", "nullable",],
         ];
     }
 }
