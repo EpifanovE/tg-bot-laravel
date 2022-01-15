@@ -97,6 +97,7 @@ const Sidebar = (props) => {
                 >
                     <SidebarItem to="/subscribers-analytics" label={t("newSubscribers")} icon="people" />
                     <SidebarItem to="/usages-analytics" label={t("uniqueUsages")} icon="chart" />
+                    <SidebarItem to="/commands-analytics" label={t("commands")} icon="chart" />
                 </DropdownItem>
             }
         </ul>

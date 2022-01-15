@@ -31,6 +31,7 @@ class PeriodRequest extends FormRequest
             "to" => ["nullable", "string",],
             "step" => ["nullable", Rule::in(["day", "month",])],
             "payload" => ["string", "nullable",],
+            "code" => ["string", "nullable",],
             "sortBy" => ["string", "nullable",],
             "sortDirection" => ["string", "nullable",],
         ];

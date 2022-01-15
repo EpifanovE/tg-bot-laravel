@@ -12,6 +12,7 @@ import Setting from "./components/pages/Settings/Setting";
 import Settings from "./components/pages/Settings/Settings";
 import NewSubscribers from "./components/pages/Analytics/NewSubscribers";
 import UniqueUsages from "./components/pages/Analytics/UniqueUsages";
+import Commands from "./components/pages/Analytics/Commands";
 
 export default () => {
 
@@ -131,6 +132,14 @@ export default () => {
             breadcrumbs: [
                 {label: "dashboard", url: "/"},
                 {label: "uniqueUsages"},
+            ]
+        },
+        {
+            path: '/commands-analytics',
+            component: Commands as any,
+            breadcrumbs: [
+                {label: "dashboard", url: "/"},
+                {label: "commands"},
             ]
         },
     );

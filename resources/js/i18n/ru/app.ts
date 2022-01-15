@@ -125,4 +125,5 @@ export default {
     amount: "Количество",
     value: "Значение",
     uniqueUsages: "Уникальные пользователи",
+    commands: "Комманды",
 };

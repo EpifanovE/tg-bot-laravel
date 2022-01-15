@@ -45,6 +45,12 @@ class LogEvent extends Model
     public function scopeWithPayload(Builder $query, string $payload)
     {
         $query
-            ->where("payload", "LIKE", $payload . "%");
+            ->where("payload", "LIKE", "%" . $payload . "%");
+    }
+
+    public function scopeWithCode(Builder $query, string $code)
+    {
+        $query
+            ->where("code", "LIKE", "%" . mb_strtolower($code) . "%");
     }
 }
