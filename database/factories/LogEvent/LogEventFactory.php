@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories\LogEvent;
 
 use App\Models\LogEvent\LogEvent;
+use App\Models\Subscriber\Subscriber;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class LogEventFactory extends Factory
@@ -20,12 +21,13 @@ class LogEventFactory extends Factory
         ];
     }
 
-    public function start()
+    public function start(Subscriber $subscriber)
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function (array $attributes) use ($subscriber) {
             return [
                 "code" => LogEvent::COMMAND_START,
                 "payload" => $this->faker->randomElement(["yandex", "google", "facebook", null]),
+                "created_at" => $subscriber->created_at,
             ];
         });
     }
@@ -41,4 +43,13 @@ class LogEventFactory extends Factory
             ];
         });
     }
+
+//    public function createdAt(string $createdAt)
+//    {
+//        return $this->state(function (array $attributes) use ($createdAt) {
+//            return [
+//                "created_at" => $createdAt,
+//            ];
+//        });
+//    }
 }

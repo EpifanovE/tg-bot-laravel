@@ -32,10 +32,7 @@ class AdminSeeder extends Seeder
             [
                 "key" => "admin",
                 "name" => "Администратор",
-                "permissions" => json_encode([
-                    "admins.manage",
-                    "roles.manage",
-                ]),
+                "permissions" => json_encode(config("authorization.permissions")),
                 "built_in" => true,
             ],
             [
