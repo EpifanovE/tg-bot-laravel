@@ -11,6 +11,7 @@ import Role from "./components/pages/Roles/Role";
 import Setting from "./components/pages/Settings/Setting";
 import Settings from "./components/pages/Settings/Settings";
 import NewSubscribers from "./components/pages/Analytics/NewSubscribers";
+import UniqueUsages from "./components/pages/Analytics/UniqueUsages";
 
 export default () => {
 
@@ -122,6 +123,14 @@ export default () => {
             breadcrumbs: [
                 {label: "dashboard", url: "/"},
                 {label: "newSubscribers"},
+            ]
+        },
+        {
+            path: '/usages-analytics',
+            component: UniqueUsages as any,
+            breadcrumbs: [
+                {label: "dashboard", url: "/"},
+                {label: "uniqueUsages"},
             ]
         },
     );

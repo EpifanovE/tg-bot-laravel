@@ -16,6 +16,7 @@ class LogEvent extends Model
     use HasFactory;
 
     const COMMAND_START = "c_start";
+    const COMMAND_UNHANDLED = "unhandled";
 
     public $timestamps = ["created_at"];
 

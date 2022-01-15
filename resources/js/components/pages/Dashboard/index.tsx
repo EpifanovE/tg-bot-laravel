@@ -26,6 +26,7 @@ const Dashboard = (props) => {
             period={`month`}
             title={t('newSubscribers')}
             periodBar={true}
+            label={t("newSubscribers")}
         />
     </div>
 };

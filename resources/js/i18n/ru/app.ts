@@ -123,4 +123,6 @@ export default {
     data: "Данные",
     notDefined: "Не задано",
     amount: "Количество",
+    value: "Значение",
+    uniqueUsages: "Уникальные пользователи",
 };

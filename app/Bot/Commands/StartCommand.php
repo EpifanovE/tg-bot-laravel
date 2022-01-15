@@ -46,11 +46,11 @@ class StartCommand extends \WeStacks\TeleBot\Handlers\CommandHandler
             "payload" => $param,
         ];
 
-        if ($subscriber->events()->where("code", LogEvent::COMMAND_START)->count() === 0) {
+        if ($subscriber->logEvents()->where("code", LogEvent::COMMAND_START)->count() === 0) {
             $logEventParams["created_at"] = $subscriber->created_at;
         }
 
-        $subscriber->events()->create($logEventParams);
+        $subscriber->logEvents()->create($logEventParams);
 
         return $subscriber;
     }

@@ -31,6 +31,7 @@ interface IMainChartProps {
     to?: Moment | string
     step?: "day" | "month"
     queryParams?: {[key: string] : string | Moment}
+    label?: string
 }
 
 
@@ -40,7 +41,7 @@ export type Step = "day" | "month";
 
 const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: periodProp,
                                             title, aspectRatio, from: fromProp,
-                                            to: toProp, step: stepProp, queryParams}) => {
+                                            to: toProp, step: stepProp, queryParams, label}) => {
 
     const chartRef = useRef<ChartJS>(null);
 
@@ -133,7 +134,7 @@ const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: peri
         labels,
         datasets: [
             {
-                label: 'Новые подписчики',
+                label: label || t("value"),
                 borderColor: 'rgb(255, 99, 132)',
                 borderWidth: 2,
                 fill: false,

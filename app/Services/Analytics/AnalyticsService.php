@@ -49,4 +49,22 @@ class AnalyticsService
             ->orderBy($orderBy, $orderDirection)
             ->get()->toArray();
     }
+
+    public function uniqueUsages(array $requestData): array
+    {
+
+        $builder = LogEvent::query()
+            ->select("subscriber_id", DB::raw("DATE(created_at) as created_at"))
+            ->where("code", "!=", LogEvent::COMMAND_START)
+            ->groupBy("subscriber_id", DB::raw("DATE(created_at)"));
+
+        $periodBuilder = new PeriodBuilder();
+        $periodBuilder->byRequest($requestData);
+
+        $chartData = new ChartData($builder, $periodBuilder);
+
+        $chartData->setTable("log_events");
+
+        return $chartData->toArray();
+    }
 }

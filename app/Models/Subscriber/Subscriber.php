@@ -25,7 +25,7 @@ class Subscriber extends Model
         "blocked" => "boolean",
     ];
 
-    public function events(): HasMany
+    public function logEvents(): HasMany
     {
         return $this->hasMany(LogEvent::class);
     }

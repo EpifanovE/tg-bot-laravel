@@ -43,6 +43,10 @@ class PeriodBuilder
 
             $this->$methodName();
         }
+
+        if ($this->step === self::STEP_MONTH) {
+            $this->dateFormat = "m-Y";
+        }
     }
 
     public function period(Carbon $from, Carbon $to, $step = self::STEP_DAY)

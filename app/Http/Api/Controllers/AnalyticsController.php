@@ -35,6 +35,15 @@ class AnalyticsController extends Controller
         return response()->json($data);
     }
 
+    public function uniqueUsages(PeriodRequest $request)
+    {
+        $this->authorize("view", LogEvent::class);
+
+        $data = $this->service->uniqueUsages($request->validated());
+
+        return response()->json($data);
+    }
+
     public function test(PeriodRequest $request)
     {
 

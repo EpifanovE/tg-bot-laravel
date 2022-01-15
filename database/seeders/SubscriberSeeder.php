@@ -10,15 +10,23 @@ class SubscriberSeeder extends Seeder
 {
     public function run()
     {
-        Subscriber::factory()->count(1000)->create()->each(function ($subscriber) {
+        Subscriber::factory()
+            ->count(1000)
+            ->create()
+            ->each(function ($subscriber) {
 
-            $event = LogEvent::factory()->make();
+            $event = LogEvent::factory()->start()->make();
             $event->created_at = $subscriber->created_at;
 
             /**
              * @var Subscriber $subscriber
              */
-            $subscriber->events()->save($event);
+            $subscriber->logEvents()->save($event);
+
+            $eventsCount = random_int(1,5);
+            $subscriber->logEvents()->saveMany(
+                LogEvent::factory()->count($eventsCount)->make()
+            );
         });
     }
 }

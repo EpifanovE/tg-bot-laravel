@@ -29,4 +29,5 @@ Route::middleware(['auth:sanctum', 'status'])->group(
 
         Route::get("/analytics/newSubscribers", "AnalyticsController@newSubscribers");
         Route::get("/analytics/newSubscribersTable", "AnalyticsController@newSubscribersTable");
+        Route::get("/analytics/uniqueUsages", "AnalyticsController@uniqueUsages");
     });

@@ -14,8 +14,20 @@ class LogEventFactory extends Factory
     public function definition()
     {
         return [
-            "code" => LogEvent::COMMAND_START,
-            "payload" => $this->faker->randomElement(["yandex", "google", "facebook", null]),
+            "code" => $this->faker->randomElement(["c_one", "c_two", "c_three", "b_one", "b_two",]),
+            "payload" => "",
+            "created_at" => $this->faker->dateTimeBetween("-3 months"),
         ];
+    }
+
+    public function start()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                "code" => LogEvent::COMMAND_START,
+                "payload" => $this->faker->randomElement(["yandex", "google", "facebook", null]),
+            ];
+        });
+
     }
 }

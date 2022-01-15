@@ -96,6 +96,7 @@ const Sidebar = (props) => {
                     onClick={handleDropdownClick}
                 >
                     <SidebarItem to="/subscribers-analytics" label={t("newSubscribers")} icon="people" />
+                    <SidebarItem to="/usages-analytics" label={t("uniqueUsages")} icon="chart" />
                 </DropdownItem>
             }
         </ul>
