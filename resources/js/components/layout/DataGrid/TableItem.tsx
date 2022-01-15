@@ -10,7 +10,7 @@ import {useTranslation} from "react-i18next";
 
 const TableItem: FC<ITableItemProps> = (props) => {
 
-    const {resource, item, columns, actions, onActionClick, onCheckItemClick, checked, deleting, size, displaySortable} = props;
+    const {resource, item, columns, actions, onActionClick, onCheckItemClick, checked, deleting, size, displaySortable, disableActions, disableBulkActions} = props;
 
     const handleCheckClick = (e: React.ChangeEvent<HTMLInputElement>) => {
         onCheckItemClick(parseInt(e.target.value));
@@ -42,20 +42,22 @@ const TableItem: FC<ITableItemProps> = (props) => {
         return <></>
     });
 
-    if (actions && typeof actions === "function") {
-        rowEls.push(<td key="actions" className="align-middle"><span className="d-flex">
-            {actions(item)}
-        </span></td>);
-    } else {
-        rowEls.push(<td key="actions" className="align-middle"><span className="d-flex">
-                    <EditAction id={item.id} resource={resource} size={size}/>
-                    <DeleteAction
-                        id={item.id}
-                        onClick={onActionClick}
-                        isDeleting={deleting}
-                        size={size}
-                    />
+    if (!disableActions) {
+        if (actions && typeof actions === "function") {
+            rowEls.push(<td key="actions" className="align-middle"><span className="d-flex">
+                {actions(item)}
             </span></td>);
+        } else {
+            rowEls.push(<td key="actions" className="align-middle"><span className="d-flex">
+                        <EditAction id={item.id} resource={resource} size={size}/>
+                        <DeleteAction
+                            id={item.id}
+                            onClick={onActionClick}
+                            isDeleting={deleting}
+                            size={size}
+                        />
+                </span></td>);
+        }
     }
 
     const RowHandler = SortableHandle(() => <td className="align-middle"><span className="MoveButton">
@@ -66,14 +68,16 @@ const TableItem: FC<ITableItemProps> = (props) => {
         rowEls.push(<RowHandler key="sort"/>);
     }
 
-    rowEls.unshift(<td className="align-middle" key="check">
-        <Checkbox
-            value={`${item.id}`}
-            checked={checked}
-            onChange={handleCheckClick}
-            className="d-inline"
-        />
-    </td>);
+    if (!disableBulkActions) {
+        rowEls.unshift(<td className="align-middle" key="check">
+            <Checkbox
+                value={`${item.id}`}
+                checked={checked}
+                onChange={handleCheckClick}
+                className="d-inline"
+            />
+        </td>);
+    }
 
     return <tr key={item.id}>
         {rowEls}

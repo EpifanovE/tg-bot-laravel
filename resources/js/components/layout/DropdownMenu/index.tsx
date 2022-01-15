@@ -10,11 +10,12 @@ export interface IDropdownMenuProps {
     mode?: string
     size?: Size
     className?: string
+    dropup?: boolean
 }
 
 const DropdownMenu : FC<IDropdownMenuProps> = (props) => {
 
-    const {choices, label, value, onChange, mode, size} = props;
+    const {choices, label, value, onChange, mode, size, dropup} = props;
 
     const [open, setOpen] = useState<boolean>(false);
 
@@ -34,7 +35,7 @@ const DropdownMenu : FC<IDropdownMenuProps> = (props) => {
         onClick={e => {e.preventDefault();handleItemClick(key)}}
     >{choices[key]}</a>);
 
-    return <>
+    return <div className={`btn-group${dropup ? ' ' + dropup : ''}`}>
         <button
             className={`btn${mode ? " btn-" + mode : ""}${size ? " btn-" + size : ""} dropdown-toggle`}
             type="button"
@@ -48,7 +49,7 @@ const DropdownMenu : FC<IDropdownMenuProps> = (props) => {
                 {els}
             </div>
         }
-    </>
+    </div>
 };
 
 export default DropdownMenu;

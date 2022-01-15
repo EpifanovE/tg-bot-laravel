@@ -7,14 +7,17 @@ import {Pagination} from "./index";
 import {IDataGridProps, IFilterData} from "./types";
 import {DELETE_ACTION, EDIT_ACTION, SORT_ASC, SORT_DESC} from "./constants";
 import Filters from "./Filters";
-import {useDebouncedEffect} from "../../../hooks/useDebounceEffect";
 import PerPage from "./PerPage";
 import {useTranslation} from "react-i18next";
 import BulkActions, {BULK_DELETE_ACTION} from "./BulkActions";
+import {useDebouncedEffect} from "../../../hooks/useDebounceEffect";
+
+export const DEFAULT_PER_PAGE = "25";
 
 const DataGrid: FC<IDataGridProps> = (props) => {
 
-    const {resource, columns, actions, filters, size, sortableSource, defaultSortColumn, defaultSortDirection} = props;
+    const {resource, columns, actions, filters, size, sortableSource, defaultSortColumn, defaultSortDirection,
+        queryParams, disableBulkActions, disableActions, keyProp, className, fixedColumns} = props;
 
     const {t} = useTranslation();
 
@@ -24,10 +27,10 @@ const DataGrid: FC<IDataGridProps> = (props) => {
     const [checkedItems, setCheckedItems] = useState<Array<number>>([]);
     const [sortable, setSortable] = useState<string>();
     const [sortDirection, setSortDirection] = useState<string>(SORT_DESC);
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [loadingError, setLoadingError] = useState<boolean>(false);
 
-    const {page = 1, perPage = 10, filter = {}} = requestData;
+    const {page = 1, perPage = DEFAULT_PER_PAGE, filter = {}} = requestData;
     const {data: items = [], meta} = responseData;
 
     useEffect(() => {
@@ -38,8 +41,8 @@ const DataGrid: FC<IDataGridProps> = (props) => {
     }, [defaultSortColumn]);
 
     useDebouncedEffect(() => {
-        fetchItems();
-    }, 500, [requestData]);
+        fetchItems()
+    }, 500, [requestData, queryParams])
 
     useEffect(() => {
         if (sortable) {
@@ -51,10 +54,14 @@ const DataGrid: FC<IDataGridProps> = (props) => {
     }, [sortable, sortDirection]);
 
     const fetchItems = () => {
+        if (loading) return;
+
         setLoading(true);
+
         setCheckedItems([]);
+
         ApiProvider
-            .getMany<IGetManyResponse<any>>(resource, requestData)
+            .getMany<IGetManyResponse<any>>(resource , {...requestData, ...queryParams, perPage: parseInt(requestData.perPage || DEFAULT_PER_PAGE)})
             .then(response => {
                 if (response?.data) {
                     setResponseData(response.data);
@@ -90,7 +97,6 @@ const DataGrid: FC<IDataGridProps> = (props) => {
     };
 
     const deleteItems = () => {
-        setLoading(true);
 
         setDeletingItems([
             ...deletingItems,
@@ -103,13 +109,11 @@ const DataGrid: FC<IDataGridProps> = (props) => {
                 fetchItems();
             })
             .finally(() => {
-                setLoading(false);
                 setDeletingItems([]);
             });
     };
 
     const handlePageClick = (page: number) => {
-        setLoading(true);
         setRequestData({
             ...requestData,
             page: page
@@ -147,7 +151,6 @@ const DataGrid: FC<IDataGridProps> = (props) => {
     };
 
     const handleChangeSortable = (source: string) => {
-        setLoading(true);
 
         if (sortable !== source) {
             setSortDirection(SORT_DESC)
@@ -161,7 +164,6 @@ const DataGrid: FC<IDataGridProps> = (props) => {
     };
 
     const handleChangeFilter = ({source, value}: IFilterData) => {
-        setLoading(true);
 
         setRequestData({
             ...requestData,
@@ -172,9 +174,7 @@ const DataGrid: FC<IDataGridProps> = (props) => {
         })
     };
 
-    const handleChangePerPage = (perPage: number) => {
-        setLoading(true);
-
+    const handleChangePerPage = (perPage: string) => {
         setRequestData({
             ...requestData,
             perPage: perPage
@@ -226,6 +226,11 @@ const DataGrid: FC<IDataGridProps> = (props) => {
                 onChangeSortable={handleChangeSortable}
                 size={size}
                 loading={loading}
+                disableBulkActions={disableBulkActions}
+                disableActions={disableActions}
+                keyProp={keyProp}
+                className={className}
+                fixedColumns={fixedColumns}
             />
             {
                 loading &&

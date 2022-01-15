@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useRef, useState} from "react";
-import {CategoryScale, Chart as ChartJS, LinearScale, LineElement, PointElement, Tooltip, BarElement} from "chart.js";
+import {CategoryScale, Chart as ChartJS, LinearScale, LineController, BarController, LineElement, PointElement, Tooltip, BarElement} from "chart.js";
 import {stringify} from 'query-string';
 import moment, {Moment} from "moment";
 import CardBody from "../../Ui/Card/CardBody";
@@ -7,8 +7,6 @@ import {Chart} from "react-chartjs-2";
 import Card from "../../Ui/Card/Card";
 import {useApi} from "../../../../hooks/useApi";
 import PeriodBar from "./PeriodBar";
-import {useDebouncedEffect} from "../../../../hooks/useDebounceEffect";
-import {errorAlert} from "../../../../utils/alerts";
 import {useTranslation} from "react-i18next";
 
 ChartJS.register(
@@ -17,7 +15,9 @@ ChartJS.register(
     PointElement,
     LineElement,
     Tooltip,
-    BarElement
+    BarElement,
+    LineController,
+    BarController
 );
 
 interface IMainChartProps {
@@ -83,11 +83,7 @@ const MainChart: FC<IMainChartProps> = ({resource, type, periodBar, period: peri
 
     useEffect(() => {
         fetchData();
-    }, [period, from, to, step]);
-
-    useDebouncedEffect(() => {
-        fetchData();
-    }, 500, [queryParams]);
+    }, [period, from, to, step, queryParams]);
 
     const fetchData = () => {
         if (!period) return;

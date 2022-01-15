@@ -28,5 +28,10 @@ class SubscriberSeeder extends Seeder
                 LogEvent::factory()->count($eventsCount)->make()
             );
         });
+
+        LogEvent::factory()
+            ->unhandled()
+            ->count(500)
+            ->create();
     }
 }

@@ -28,6 +28,17 @@ class LogEventFactory extends Factory
                 "payload" => $this->faker->randomElement(["yandex", "google", "facebook", null]),
             ];
         });
+    }
 
+    public function unhandled()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                "code" => LogEvent::COMMAND_UNHANDLED,
+                "payload" => $this->faker->realText(30),
+                "subscriber_id" => $this->faker->numberBetween(1,500),
+                "created_at" => $this->faker->dateTimeBetween("-3 months"),
+            ];
+        });
     }
 }

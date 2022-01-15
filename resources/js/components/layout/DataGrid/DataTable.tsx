@@ -5,6 +5,7 @@ import Checkbox from "../../inputs/Checkbox";
 import DummyRow from "./DummyRow";
 import {IDataTableProps} from "./types";
 import SortableTitle from "./SortableTitle";
+import {DEFAULT_PER_PAGE} from "./DataGrid";
 
 const DataTable: FC<IDataTableProps> = (props) => {
 
@@ -12,7 +13,8 @@ const DataTable: FC<IDataTableProps> = (props) => {
         columns, items, perPage, actions, onActionClick, deletingItems, resource,
         checkedItems,
         onCheckItemClick,
-        onCheckAllClick, sortable, sortDirection, onChangeSortable, size, loading
+        onCheckAllClick, sortable, sortDirection, onChangeSortable, size, loading, disableBulkActions, disableActions,
+        keyProp, className, fixedColumns
     } = props;
 
     const handleSortClick = (source: string) => {
@@ -35,15 +37,19 @@ const DataTable: FC<IDataTableProps> = (props) => {
         }
     </th>);
 
-    headEls.unshift(<th key="check">
-        <Checkbox
-            checked={!!checkedItems.length && checkedItems.length === items?.length}
-            onChange={onCheckAllClick}
-            className="d-inline"
-        />
-    </th>);
+    if (!disableBulkActions) {
+        headEls.unshift(<th key="check">
+            <Checkbox
+                checked={!!checkedItems.length && checkedItems.length === items?.length}
+                onChange={onCheckAllClick}
+                className="d-inline"
+            />
+        </th>);
+    }
 
-    headEls.push(<th key="actions"/>);
+    if (!disableActions) {
+        headEls.push(<th key="actions"/>);
+    }
 
     const handleActionClick = (id: number, actionName: string) => {
         if (onActionClick) {
@@ -57,8 +63,8 @@ const DataTable: FC<IDataTableProps> = (props) => {
 
     const getItemsEls = () => {
         if (loading) {
-            return Array.from(Array(perPage).keys())
-                .map(item => <DummyRow key={item} columns={columns} checkbox={true} actions={true}/>)
+            return Array.from(Array(parseInt(perPage || DEFAULT_PER_PAGE)).keys())
+                .map(item => <DummyRow key={item} columns={columns} checkbox={!disableBulkActions} actions={!disableActions}/>)
         }
 
         if (!items) {
@@ -66,7 +72,7 @@ const DataTable: FC<IDataTableProps> = (props) => {
         }
 
         const getProps = (item) => ({
-            key: item.id,
+            key: item[keyProp ?? "id"],
             resource: resource,
             item: item,
             columns: columns,
@@ -76,12 +82,14 @@ const DataTable: FC<IDataTableProps> = (props) => {
             checked: checkedItems.includes(item.id),
             deleting: deletingItems.includes(item.id),
             size: size,
+            disableActions,
+            disableBulkActions
         });
 
         return items.map(item => <TableItem {...getProps(item)} />);
     };
 
-    return <table className={`table${size ? " table-" + size : ""}`}>
+    return <table className={`table${size ? " table-" + size : ""}${className ? " " + className : ""}`} style={fixedColumns ? {tableLayout:"fixed"} : {}}>
         <thead>
         <tr>
             {headEls}

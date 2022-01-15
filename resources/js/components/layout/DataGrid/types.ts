@@ -12,6 +12,12 @@ export interface IDataGridProps extends HTMLAttributes<HTMLDivElement>{
     sortableSource?: string
     defaultSortColumn?: string
     defaultSortDirection?: string;
+    queryParams?: Record<string, any>
+    disableBulkActions?: boolean
+    disableActions?: boolean
+    keyProp?: string
+    className?: string
+    fixedColumns?: boolean
 }
 
 export interface IActionProps {
@@ -41,7 +47,7 @@ export interface IDataTableColumn {
 export interface IDataTableProps {
     items?: Array<any>
     columns: Array<IDataTableColumn>
-    perPage: number
+    perPage: string
     actions?: (item: any) => ReactElement
     onActionClick?: (id: number, actionName: string) => void
     deletingItems: Array<number>
@@ -55,6 +61,11 @@ export interface IDataTableProps {
     size?: Size
     sortableSource?: string
     loading: boolean
+    disableBulkActions?: boolean
+    disableActions?: boolean
+    keyProp?: string
+    className?: string
+    fixedColumns?: boolean
 }
 
 export interface IDummyRowProps {
@@ -78,6 +89,8 @@ export interface ITableItemProps {
     deleting: boolean
     size?: Size
     displaySortable?: boolean
+    disableBulkActions?: boolean
+    disableActions?: boolean
 }
 
 export interface ITextColumnProps extends IDataTableColumnProps {
@@ -123,8 +136,8 @@ export interface ISelectFilterProps extends IFilterProps{
 }
 
 export interface IPerPageProps {
-    value: number
-    onChange: (count: number) => void
+    value: string
+    onChange: (count: string) => void
     choices?: InputChoices
     size?: Size
     label?: string

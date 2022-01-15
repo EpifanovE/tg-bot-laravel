@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Api\Controllers;
 
 use App\Http\Api\Requests\Analytics\PeriodRequest;
+use App\Http\Api\Resources\StandardResourceCollection;
 use App\Models\LogEvent\LogEvent;
 use App\Services\Analytics\AnalyticsService;
 
@@ -21,7 +22,7 @@ class AnalyticsController extends Controller
     {
         $this->authorize("view", LogEvent::class);
 
-        $weekResult = $this->service->newSubscribers($request->validated());
+        $weekResult = $this->service->newSubscribersChart($request->validated());
 
         return response()->json($weekResult);
     }
@@ -39,7 +40,7 @@ class AnalyticsController extends Controller
     {
         $this->authorize("view", LogEvent::class);
 
-        $data = $this->service->uniqueUsages($request->validated());
+        $data = $this->service->uniqueUsagesChart($request->validated());
 
         return response()->json($data);
     }
@@ -48,7 +49,7 @@ class AnalyticsController extends Controller
     {
         $this->authorize("view", LogEvent::class);
 
-        $data = $this->service->commands($request->validated());
+        $data = $this->service->commandsChart($request->validated());
 
         return response()->json($data);
     }
@@ -62,9 +63,22 @@ class AnalyticsController extends Controller
         return response()->json($data);
     }
 
-    public function test(PeriodRequest $request)
+    public function unhandled(PeriodRequest $request)
     {
+        $this->authorize("view", LogEvent::class);
 
+        $data = $this->service->unhandledChart($request->validated());
+
+        return response()->json($data);
+    }
+
+    public function unhandledTable(PeriodRequest $request)
+    {
+        $this->authorize("view", LogEvent::class);
+
+        $data = $this->service->unhandledTable($request->validated());
+
+        return new StandardResourceCollection($data);
     }
 
 }

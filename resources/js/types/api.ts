@@ -4,7 +4,7 @@ export interface Response<T = any> extends AxiosResponse<T> {}
 
 export interface IApiProvider {
     getOne: <T>(resource: string, id: number) => Promise<void | Response<T>>,
-    getMany: <T>(resource: string, data?: IGetManyRequest) => Promise<void | Response<T>>,
+    getMany: <T>(resource: string, data?: { filter?: { [p: string]: string | number | Array<any> | null }; perPage?: number; paginate?: number; page?: number; sort?: Array<string> }) => Promise<void | Response<T>>,
     update: <T>(resource: string, data: IUpdateRequest) => Promise<void | Response<T>>,
     create: <T>(resource: string, data?: ICreateRequest) => Promise<void | Response<T>>,
     delete: (resource: string, id: number) => Promise<IDeleteResponse>,
@@ -20,7 +20,7 @@ export interface IApiProvider {
 
 export interface IGetManyRequest {
     page?: number,
-    perPage?: number,
+    perPage?: string,
     sort?: Array<string>,
     filter?: { [key: string]: string | number | Array<any> | null }
     paginate?: number

@@ -13,6 +13,7 @@ import Settings from "./components/pages/Settings/Settings";
 import NewSubscribers from "./components/pages/Analytics/NewSubscribers";
 import UniqueUsages from "./components/pages/Analytics/UniqueUsages";
 import Commands from "./components/pages/Analytics/Commands";
+import Unhandled from "./components/pages/Analytics/Unhandled";
 
 export default () => {
 
@@ -140,6 +141,14 @@ export default () => {
             breadcrumbs: [
                 {label: "dashboard", url: "/"},
                 {label: "commands"},
+            ]
+        },
+        {
+            path: '/unhandled-analytics',
+            component: Unhandled as any,
+            breadcrumbs: [
+                {label: "dashboard", url: "/"},
+                {label: "unhandled"},
             ]
         },
     );

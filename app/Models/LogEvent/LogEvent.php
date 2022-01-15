@@ -53,4 +53,10 @@ class LogEvent extends Model
         $query
             ->where("code", "LIKE", "%" . mb_strtolower($code) . "%");
     }
+
+    public function scopeUnhandled(Builder $query)
+    {
+        $query
+            ->where("code", "=", self::COMMAND_UNHANDLED);
+    }
 }

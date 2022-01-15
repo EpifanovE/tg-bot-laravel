@@ -22,7 +22,9 @@ const ApiProvider: IApiProvider = {
         let params = "";
 
         if (data) {
+
             const query = {
+                ...data,
                 page: JSON.stringify(data.page),
                 perPage: JSON.stringify(data.perPage),
                 sort: JSON.stringify(data.sort),

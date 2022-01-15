@@ -34,6 +34,9 @@ class PeriodRequest extends FormRequest
             "code" => ["string", "nullable",],
             "sortBy" => ["string", "nullable",],
             "sortDirection" => ["string", "nullable",],
+            "page" => ["integer", "nullable",],
+            "perPage" => ["integer", "nullable",],
+            'sort' => ['json', 'nullable',],
         ];
     }
 }

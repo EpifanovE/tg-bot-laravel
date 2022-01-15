@@ -32,7 +32,7 @@ const ReferenceSelect: FC<IReferenceSelectProps> = (props) => {
 
     useEffect(() => {
         api
-            .getMany<{data: Array<any>}>(resource, {paginate:0})
+            .getMany<{data: Array<any>}>(resource, {paginate: 0})
             .then(response => {
                 if (!response?.data) return;
 

@@ -126,4 +126,5 @@ export default {
     value: "Значение",
     uniqueUsages: "Уникальные пользователи",
     commands: "Комманды",
+    unhandled: "Необработанные",
 };

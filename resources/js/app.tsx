@@ -50,6 +50,6 @@ ReactDOM.render(
         <Router basename={APP_PREFIX}>
             <App/>
         </Router>
-        <ToastContainer />
+        <ToastContainer theme="colored" />
     </Provider>
     , appElement);

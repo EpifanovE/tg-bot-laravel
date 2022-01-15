@@ -32,4 +32,6 @@ Route::middleware(['auth:sanctum', 'status'])->group(
         Route::get("/analytics/uniqueUsages", "AnalyticsController@uniqueUsages");
         Route::get("/analytics/commands", "AnalyticsController@commands");
         Route::get("/analytics/commandsTable", "AnalyticsController@commandsTable");
+        Route::get("/analytics/unhandled", "AnalyticsController@unhandled");
+        Route::get("/analytics/unhandledTable", "AnalyticsController@unhandledTable");
     });
