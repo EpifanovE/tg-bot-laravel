@@ -26,7 +26,7 @@ class LogEventFactory extends Factory
         return $this->state(function (array $attributes) use ($subscriber) {
             return [
                 "code" => LogEvent::COMMAND_START,
-                "payload" => $this->faker->randomElement(["yandex", "google", "facebook", null]),
+//                "payload" => $this->faker->randomElement(["yandex", "google", "facebook", null]),
                 "created_at" => $subscriber->created_at,
             ];
         });
@@ -49,6 +49,15 @@ class LogEventFactory extends Factory
         return $this->state(function (array $attributes) use ($start, $end) {
             return [
                 "created_at" => $this->faker->dateTimeBetween($start, $end),
+            ];
+        });
+    }
+
+    public function payload(string $payload)
+    {
+        return $this->state(function (array $attributes) use ($payload) {
+            return [
+                "payload" => $payload,
             ];
         });
     }

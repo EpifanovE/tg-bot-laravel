@@ -6,24 +6,23 @@ use App\Models\LogEvent\LogEvent;
 use App\Models\Subscriber\Subscriber;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class SubscriberSeeder extends Seeder
 {
     public function run()
     {
-        Subscriber::factory()->subMonths(12)->count(10)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(11)->count(15)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(10)->count(10)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(9)->count(20)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(8)->count(30)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(7)->count(35)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(6)->count(40)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(5)->count(45)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(4)->count(65)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(3)->count(70)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(2)->count(70)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(1)->count(95)->create()->each([$this, "addEvent"]);
-        Subscriber::factory()->subMonths(0)->count(100)->create()->each([$this, "addEvent"]);
+        $multiplier = 1;
+
+        for($i = 12; $i >= 0; $i--) {
+            Subscriber::factory()->subMonths($i)->count(6 * $multiplier)->create()->each([$this, "addStartEmptyEvent"]); // 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78 - 546
+            Subscriber::factory()->subMonths($i)->count(3 * $multiplier)->create()->each([$this, "addStartGoogleEvent"]); // 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 39 - 273
+            Subscriber::factory()->subMonths($i)->count(2 * $multiplier)->create()->each([$this, "addStartYandexEvent"]); // 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26 - 182
+            Subscriber::factory()->subMonths($i)->count(1 * $multiplier)->create()->each([$this, "addStartFacebookEvent"]); // 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 - 91
+            // 12, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156 - 1092
+
+            $multiplier++;
+        }
 
 //        LogEvent::factory()
 //            ->unhandled()
@@ -31,17 +30,37 @@ class SubscriberSeeder extends Seeder
 //            ->create();
     }
 
-    public function addEvent(Subscriber $subscriber)
+    public function addStartGoogleEvent(Subscriber $subscriber)
     {
-        $event = LogEvent::factory()->start($subscriber)->make();
-
-        /**
-         * @var Subscriber $subscriber
-         */
-        $subscriber->logEvents()->save($event);
-
-        $subscriber->logEvents()->saveMany(
-            LogEvent::factory()->createdAt($subscriber->created_at, Carbon::now()->toString())->count(3)->make()
-        );
+        $subscriber->logEvents()->save(LogEvent::factory()->start($subscriber)->payload("google")->make());
     }
+
+    public function addStartYandexEvent(Subscriber $subscriber)
+    {
+        $subscriber->logEvents()->save(LogEvent::factory()->start($subscriber)->payload("yandex")->make());
+    }
+
+    public function addStartFacebookEvent(Subscriber $subscriber)
+    {
+        $subscriber->logEvents()->save(LogEvent::factory()->start($subscriber)->payload("facebook")->make());
+    }
+
+    public function addStartEmptyEvent(Subscriber $subscriber)
+    {
+        $subscriber->logEvents()->save(LogEvent::factory()->start($subscriber)->make());
+    }
+
+//    public function addEvent(Subscriber $subscriber)
+//    {
+//        $event = LogEvent::factory()->start($subscriber)->make();
+//
+//        /**
+//         * @var Subscriber $subscriber
+//         */
+//        $subscriber->logEvents()->save($event);
+//
+//        $subscriber->logEvents()->saveMany(
+//            LogEvent::factory()->createdAt($subscriber->created_at, Carbon::now()->toString())->count(3)->make(),
+//        );
+//    }
 }

@@ -9,7 +9,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(AdminSeeder::class);
-        $this->call(SubscriberSeeder::class);
-//        $this->call(SubscriberByDaySeeder::class);
+//        $this->call(SubscriberSeeder::class);
+        $this->call(SubscriberByDaySeeder::class);
     }
 }

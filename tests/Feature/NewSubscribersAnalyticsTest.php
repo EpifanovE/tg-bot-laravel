@@ -31,7 +31,7 @@ class NewSubscribersAnalyticsTest extends TestCase
             ])
             ->get("/api/analytics/newSubscribers?key=year");
 
-        $values = [10, 15, 10, 20, 30, 35, 40, 45, 65, 70, 70, 95, 100,];
+        $values = [12, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156,];
 
         $now = Carbon::now()->toImmutable();
         $start = $now->subYear()->toImmutable();
@@ -70,11 +70,11 @@ class NewSubscribersAnalyticsTest extends TestCase
 
         $daysCount = $start->diffInDays($now);
 
-        $values = [];
+        $values = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320];
         $labels = [];
 
         for ($i = $daysCount; $i >= 0; $i--) {
-            array_push($values, $daysCount - $i + 1);
+//            array_push($values, $daysCount - $i + 1);
             array_push($labels, $now->subDays($i)->format("d-m-Y"));
         }
 
@@ -102,7 +102,7 @@ class NewSubscribersAnalyticsTest extends TestCase
 
         $daysCount = $start->diffInDays($now);
 
-        $values = [26, 27, 28, 29, 30, 31, 32,];
+        $values = [260, 270, 280, 290, 300, 310, 320,];
 
         $labels = [];
 
@@ -135,7 +135,7 @@ class NewSubscribersAnalyticsTest extends TestCase
             ])
             ->get("/api/analytics/newSubscribers?key=customPeriod&from={$start->toDateTimeString()}&to={$end->toDateTimeString()}&step=day");
 
-        $values = [22, 23, 24, 25, 26, 27,];
+        $values = [220, 230, 240, 250, 260, 270,];
         $labels = [];
 
         for ($i = 0; $i <= $daysCount; $i++) {
@@ -168,7 +168,7 @@ class NewSubscribersAnalyticsTest extends TestCase
             ])
             ->get("/api/analytics/newSubscribers?key=customPeriod&from={$start->toDateTimeString()}&to={$end->toDateTimeString()}&step=month");
 
-        $values = [40, 45, 65, 70, 70, 95];
+        $values = [84, 96, 108, 120, 132, 144,];
         $labels = [];
 
         for ($i = 0; $i < $monthsCount; $i++) {
@@ -192,9 +192,26 @@ class NewSubscribersAnalyticsTest extends TestCase
             ->withHeaders([
                 "Accept" => "application/json",
             ])
-            ->get("/api/analytics/newSubscribers?key=year");
+            ->get("/api/analytics/newSubscribersTable?key=year");
 
-        $values = [10, 15, 10, 20, 30, 35, 40, 45, 65, 70, 70, 95, 100,];
+        $values = [
+            [
+                "count" => 546,
+                "payload" => "",
+            ],
+            [
+                "count" => 273,
+                "payload" => "google",
+            ],
+            [
+                "count" => 182,
+                "payload" => "yandex",
+            ],
+            [
+                "count" => 91,
+                "payload" => "facebook",
+            ],
+        ];
 
         $now = Carbon::now()->toImmutable();
         $start = $now->subYear()->toImmutable();
@@ -209,7 +226,6 @@ class NewSubscribersAnalyticsTest extends TestCase
             array_push($labels, $start->addMonths($i)->format("m-Y"));
         }
 
-        $this->assertEquals($values, $response["data"]);
-        $this->assertEquals($labels, $response["labels"]);
+        $this->assertEquals($response->json(), $values);
     }
 }
