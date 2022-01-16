@@ -26,7 +26,7 @@ class PeriodBuilder
             if (!empty($data["from"])) {
                 $this->from = Carbon::parse($data["from"]);
             } else {
-                $this->from = (new Carbon())->subMonth();
+                $this->from = (new Carbon())->subMonth()->startOfMonth();
             }
 
             if (!empty($data["to"])) {
@@ -38,11 +38,24 @@ class PeriodBuilder
             if (!empty($data["step"])) {
                 $this->step = $data["step"];
             }
+
+            $this->from->startOfDay();
+            $this->to->endOfDay();
+
         } else {
             $methodName = $this->getPeriodMethodName($data["key"]);
 
             $this->$methodName();
+
+            if (in_array($methodName, ["yearAgo", "currentMonth", "currentYear", ])) {
+                $this->from->startOfMonth();
+            }
+
+            if (in_array($methodName, ["weekAgo", "currentWeek", "monthAgo", ])) {
+                $this->from->startOfDay();
+            }
         }
+
 
         if ($this->step === self::STEP_MONTH) {
             $this->dateFormat = "m-Y";

@@ -112,10 +112,12 @@ class ChartData
         $start = $this->periodBuilder->getFrom()->toImmutable();
         $end  = $this->periodBuilder->getTo()->toImmutable();
 
-        $array = [$start->format($this->periodBuilder->getDateFormat())];
+        $diff = $start->startOfMonth()->diffInMonths($end->startOfMonth());
 
-        for ($i = 1; $i <= $start->diffInMonths($end); $i++) {
-            array_push($array, $start->addMonths($i)->format($this->periodBuilder->getDateFormat()));
+        $array = [];
+
+        for ($i = 0; $i <= $diff; $i++) {
+            array_push($array, $start->addMonthsNoOverflow($i)->format($this->periodBuilder->getDateFormat()));
         }
 
         return $array;

@@ -23,7 +23,7 @@ class SubscriberFactory extends Factory
         ];
     }
 
-    public function subMonth(int $number)
+    public function subMonths(int $number)
     {
         return $this->state(function (array $attributes) use ($number) {
 
@@ -37,6 +37,18 @@ class SubscriberFactory extends Factory
 
             return [
                 "created_at" => $this->faker->dateTimeBetween($start, $end)
+            ];
+        });
+    }
+
+    public function subDays(int $number)
+    {
+        return $this->state(function (array $attributes) use ($number) {
+
+            $day = Carbon::now()->subDays($number);
+
+            return [
+                "created_at" => $day,
             ];
         });
     }

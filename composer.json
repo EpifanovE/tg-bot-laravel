@@ -55,6 +55,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
+        "doctrine/dbal": "^3.2",
         "facade/ignition": "^2.17",
         "fakerphp/faker": "^1.17",
         "laravel/sail": "^1.12",

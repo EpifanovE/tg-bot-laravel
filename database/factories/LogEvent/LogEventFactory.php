@@ -44,12 +44,12 @@ class LogEventFactory extends Factory
         });
     }
 
-//    public function createdAt(string $createdAt)
-//    {
-//        return $this->state(function (array $attributes) use ($createdAt) {
-//            return [
-//                "created_at" => $createdAt,
-//            ];
-//        });
-//    }
+    public function createdAt(string $start, string $end)
+    {
+        return $this->state(function (array $attributes) use ($start, $end) {
+            return [
+                "created_at" => $this->faker->dateTimeBetween($start, $end),
+            ];
+        });
+    }
 }

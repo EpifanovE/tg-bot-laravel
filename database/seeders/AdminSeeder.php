@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin\Admin;
+use App\Models\Admin\Role;
 use App\Models\Admin\Status;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -45,10 +47,13 @@ class AdminSeeder extends Seeder
             ],
         ]);
 
+        $admin = Admin::where("email", "workeev@gmail.com")->first();
+        $role = Role::where("key", "admin")->first();
+
         DB::table("admin_role")->insert([
             [
-                "admin_id" => 1,
-                "role_id" => 1,
+                "admin_id" => $admin->id,
+                "role_id" => $role->id,
             ],
         ]);
     }
