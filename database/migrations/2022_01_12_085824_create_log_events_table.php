@@ -13,8 +13,7 @@ class CreateLogEventsTable extends Migration
             $table->string("code", 128);
             $table->string("payload", 1024)->nullable();
             $table->bigInteger("subscriber_id")->unsigned()->nullable();
-            $table->timestamps();
-            $table->dropColumn('updated_at');
+            $table->timestamp('created_at')->nullable();
 
             $table->foreign('subscriber_id')
                 ->references('id')->on('subscribers')

@@ -81,4 +81,17 @@ class AnalyticsController extends Controller
         return new StandardResourceCollection($data);
     }
 
+    public function test()
+    {
+        $arr = [12, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156];
+
+        $new = [];
+
+        for($i = 0; $i < count($arr); $i++) {
+                $new[] = $arr[$i] + $arr[$i] * 2;
+        }
+
+        dd($new);
+    }
+
 }

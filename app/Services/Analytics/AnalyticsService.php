@@ -57,7 +57,7 @@ class AnalyticsService
 
         $builder = LogEvent::query()
             ->select("subscriber_id", DB::raw("DATE(created_at) as created_at"))
-            ->where("code", "!=", LogEvent::COMMAND_START)
+//            ->where("code", "!=", LogEvent::COMMAND_START)
             ->groupBy("subscriber_id", DB::raw("DATE(created_at)"));
 
         $periodBuilder = new PeriodBuilder();

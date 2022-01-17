@@ -15,6 +15,14 @@
         "spatie/eloquent-sortable": "^4.0",
         "westacks/telebot": "^1.14"
     },
+    "require-dev": {
+        "facade/ignition": "^2.17",
+        "fakerphp/faker": "^1.17",
+        "laravel/sail": "^1.12",
+        "mockery/mockery": "^1.4",
+        "nunomaduro/collision": "^5.10",
+        "phpunit/phpunit": "^9.5"
+    },
     "autoload": {
         "psr-4": {
             "App\\": "app/",
@@ -53,14 +61,5 @@
         "sort-packages": true
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require-dev": {
-        "doctrine/dbal": "^3.2",
-        "facade/ignition": "^2.17",
-        "fakerphp/faker": "^1.17",
-        "laravel/sail": "^1.12",
-        "mockery/mockery": "^1.4",
-        "nunomaduro/collision": "^5.10",
-        "phpunit/phpunit": "^9.5"
-    }
+    "prefer-stable": true
 }

@@ -52,4 +52,16 @@ class SubscriberFactory extends Factory
             ];
         });
     }
+
+    public function createdAt(string $start, string $end = null)
+    {
+        $created_at = !empty($end) ?
+            $this->faker->dateTimeBetween($start, $end) : $start;
+
+        return $this->state(function (array $attributes) use ($created_at) {
+            return [
+                "created_at" => $created_at,
+            ];
+        });
+    }
 }
