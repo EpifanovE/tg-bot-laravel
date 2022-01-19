@@ -18,8 +18,12 @@ class CreateAdminsTable extends Migration
             $table->string('password');
             $table->json('settings')->nullable();
             $table->boolean("built_in")->default(false);
+            $table->bigInteger("subscriber_id")->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign("subscriber_id")->references("id")
+                ->on("subscribers")->onDelete("set null");
         });
     }
 

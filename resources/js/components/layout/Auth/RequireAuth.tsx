@@ -1,19 +1,11 @@
-import React, {FC, ReactNode, useEffect} from "react";
+import React, {FC, useEffect} from "react";
+import {Navigate, Route, useLocation} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {Route, Navigate, useLocation} from "react-router-dom";
-
 import {IRootState} from "../../../store/reducers/rootReducer";
 import {IAdminState} from "../../../store/reducers/adminReducer";
 import {setPrevPath} from "../../../store/actions/appActions";
 
-interface IProtectedRouteProps {
-    exact?: boolean
-    path: string
-    component?: any
-    render?: any
-}
-
-const ProtectedRoute: FC<IProtectedRouteProps> = ({...props}) => {
+const RequireAuth: FC = ({children}) => {
 
     const dispatch = useDispatch();
     const {pathname} = useLocation();
@@ -27,10 +19,10 @@ const ProtectedRoute: FC<IProtectedRouteProps> = ({...props}) => {
     }, [isLoggedIn]);
 
     if (isLoggedIn) {
-        return <Route {...props} />
+        return <>{children}</>
     }
 
     return <Navigate to="/login" />
-};
+}
 
-export default ProtectedRoute;
+export default RequireAuth;

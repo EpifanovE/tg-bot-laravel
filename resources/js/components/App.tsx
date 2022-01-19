@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {Route, Switch} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import {useMediaQuery} from 'react-responsive';
 import {useTranslation} from "react-i18next";
 
@@ -19,6 +19,7 @@ import {getProfile} from "../store/actions/adminActions";
 import Wrapper from "./layout/Wrapper";
 import Page404 from "./pages/404";
 import {IAppState} from "../store/reducers/appReducer";
+import RequireAuth from "./layout/Auth/RequireAuth";
 
 const App = (props) => {
 
@@ -63,17 +64,24 @@ const App = (props) => {
         return <div>Loading...</div>
     }
 
+    // const routeComponents = routes().map(({path, component: Component, isPublic, breadcrumbs}, key) => {
+    //     return isPublic
+    //         ? <Route path={path} element={<Component />} key={key}/>
+    //         : <ProtectedRoute path={path} render={() => <Wrapper breadcrumbs={breadcrumbs}><Component/></Wrapper>}
+    //                           key={key}/>;
+    // });
+
     const routeComponents = routes().map(({path, component: Component, isPublic, breadcrumbs}, key) => {
         return isPublic
-            ? <Route exact path={path} component={Component} key={key}/>
-            : <ProtectedRoute exact path={path} render={() => <Wrapper breadcrumbs={breadcrumbs}><Component/></Wrapper>}
+            ? <Route path={path} element={<Component />} key={key}/>
+            : <Route path={path} element={<RequireAuth><Wrapper breadcrumbs={breadcrumbs}><Component/></Wrapper></RequireAuth>}
                               key={key}/>;
     });
 
-    return <Switch>
+    return <Routes>
         {routeComponents}
-        <Route component={Page404}/>
-    </Switch>;
+        <Route element={<Page404 />}/>
+    </Routes>;
 };
 
 export default App;

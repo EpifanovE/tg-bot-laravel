@@ -6,7 +6,7 @@ import useIsMounted from "../../../hooks/useIsMounted";
 
 const useRoleState = () => {
     const api = useApi();
-    const {id} = useParams();
+    const {id} = useParams<{id: string}>();
     const [saving, setSaving] = useState(false);
     const [createdRoleId, setCreatedRoleId] = useState<number>();
     const [permissionsList, setPermissionsList] = useState<IPermissionsList>({

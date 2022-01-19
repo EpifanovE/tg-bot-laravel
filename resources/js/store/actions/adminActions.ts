@@ -66,7 +66,7 @@ export const passwordResetFail = () => {
     return {type: PASSWORD_RESET_FAIL};
 };
 
-export const passwordSetRequest = (data: { password: string, password_confirmation: string, token: string, email: string }) => {
+export const passwordSetRequest = (data: { password: string, password_confirmation: string, token?: string, email?: string }) => {
     return {type: PASSWORD_SET_REQUEST, payload: data};
 };
 

@@ -8,7 +8,7 @@ import useIsMounted from "../../../hooks/useIsMounted";
 const useAdminState = () => {
     const api = useApi();
 
-    const {id} = useParams();
+    const {id} = useParams<{id: string}>();
 
     const [admin, setAdmin] = useState<IAdmin>({
         name: "",

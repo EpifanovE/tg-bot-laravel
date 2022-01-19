@@ -1,7 +1,7 @@
 import React, {FC, useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
 import {IRootState} from "../../../store/reducers/rootReducer";
 import {IAdminState} from "../../../store/reducers/adminReducer";
@@ -33,7 +33,7 @@ const Setting: FC = () => {
     }
 
     if (createdSettingId) {
-        return <Redirect to={`/settings/${createdSettingId}`}/>
+        return <Navigate to={`/settings/${createdSettingId}`}/>
     }
 
     return <>

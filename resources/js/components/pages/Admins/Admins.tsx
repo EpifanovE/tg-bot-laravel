@@ -100,6 +100,7 @@ const Admins: FC<IAdminsProps> = () => {
         title={t("admins")}
         columns={columns}
         filters={filters}
+        creating={true}
     />;
 };
 

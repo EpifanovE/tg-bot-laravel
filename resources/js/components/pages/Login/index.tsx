@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {Redirect, NavLink} from "react-router-dom";
+import {Navigate, NavLink} from "react-router-dom";
 
 import {loginRequest} from "../../../store/actions/adminActions";
 import {IRootState} from "../../../store/reducers/rootReducer";
@@ -62,7 +62,7 @@ const Login = (props) => {
     };
 
     if (isLoggedIn) {
-        return <Redirect to={`${prevPath ? prevPath : "/"}`}/>
+        return <Navigate to={`${prevPath ? prevPath : "/"}`}/>
     }
 
     return <div className="container d-flex flex-column justify-content-center">
@@ -114,7 +114,7 @@ const Login = (props) => {
                                     <NavLink
                                         to="/password/reset"
                                         className="btn btn-link px-0"
-                                        attrs={{type: "button"}}
+                                        type={`button`}
                                     >
                                         {t("forgot_password")}
                                     </NavLink>

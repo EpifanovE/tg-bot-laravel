@@ -16,19 +16,23 @@ interface IIndexPageProps {
     columns: Array<IDataTableColumn>
     filters?: Array<ReactElement>
     actions?: (item: any) => ReactElement
+    creating?: boolean
 }
 
-const IndexPage: FC<IIndexPageProps> = ({resource, title, columns, filters, actions}) => {
+const IndexPage: FC<IIndexPageProps> = ({resource, title, columns, filters, actions, creating}) => {
 
     const {t} = useTranslation();
 
     return <Row>
-        <Col width={{"sm": 12}} className="d-flex justify-content-end mb-4">
-            <NavLink className="btn btn-success d-flex align-items-center" to={`/${resource}/create`}>
-                <Icon name="plus" className="mr-2"/>
-                {t("buttons.create")}
-            </NavLink>
-        </Col>
+        {
+            !!creating &&
+            <Col width={{"sm": 12}} className="d-flex justify-content-end mb-4">
+                <NavLink className="btn btn-success d-flex align-items-center" to={`/${resource}/create`}>
+                    <Icon name="plus" className="mr-2"/>
+                    {t("buttons.create")}
+                </NavLink>
+            </Col>
+        }
         <Col width={{"sm": 12}}>
             <Card>
                 <CardHeader>

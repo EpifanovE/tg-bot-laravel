@@ -3,16 +3,15 @@ import {call, put, takeEvery} from 'redux-saga/effects';
 import {PASSWORD_RESET_REQUEST, PASSWORD_SET_REQUEST} from "../constants/adminConstants";
 import {setSubmitting} from "../actions/appActions";
 import ApiProvider from "../../api/apiProvider";
-import {getErrorResponseMessages} from "../../utils/errors";
 import {
-    getProfile,
+
     passwordResetFail,
     passwordResetSuccess,
     passwordSetFail,
     passwordSetSuccess
 } from "../actions/adminActions";
 import {IResetPasswordResponse} from "../../types/api";
-import {showAlerts, successAlert} from "../../utils/alerts";
+import { successAlert} from "../../utils/alerts";
 
 export function* passwordReset(action) {
     try {

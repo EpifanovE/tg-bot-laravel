@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import Row from "../../layout/Ui/Row";
 import Col from "../../layout/Ui/Col";
 import Card from "../../layout/Ui/Card/Card";
@@ -36,7 +36,7 @@ const Role: FC<IRoleProps> = () => {
     }
 
     if (createdRoleId) {
-        return <Redirect to={`/roles/${createdRoleId}`}/>
+        return <Navigate to={`/roles/${createdRoleId}`}/>
     }
 
     return <>

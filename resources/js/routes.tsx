@@ -14,6 +14,8 @@ import NewSubscribers from "./components/pages/Analytics/NewSubscribers";
 import UniqueUsages from "./components/pages/Analytics/UniqueUsages";
 import Commands from "./components/pages/Analytics/Commands";
 import Unhandled from "./components/pages/Analytics/Unhandled";
+import Subscribers from "./components/pages/Subscribers/Subscribers";
+import Subscriber from "./components/pages/Subscribers/Subscriber";
 
 export default () => {
 
@@ -114,6 +116,26 @@ export default () => {
             breadcrumbs: [
                 {label: "dashboard", url: "/"},
                 {label: "settings"},
+            ]
+        }
+    );
+
+    routes.push(
+        {
+            path: '/subscribers/:id',
+            component: Subscriber as any,
+            breadcrumbs: [
+                {label: "dashboard", url: "/"},
+                {label: "subscribers", url: "/subscribers"},
+                {label: ":id"},
+            ]
+        },
+        {
+            path: '/subscribers',
+            component: Subscribers as any,
+            breadcrumbs: [
+                {label: "dashboard", url: "/"},
+                {label: "subscribers"},
             ]
         }
     );

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Api\Resources\Admin;
+namespace App\Http\Api\Resources\Subscriber;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class AdminResourceCollection extends ResourceCollection
+class SubscriberResourceCollection extends ResourceCollection
 {
-    public $collects = AdminResourceCollectionItem::class;
+    public $collects = SubscriberResourceCollectionItem::class;
 
     public function toArray($request)
     {

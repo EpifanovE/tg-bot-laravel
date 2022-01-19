@@ -16,12 +16,13 @@ interface IReferenceSelectProps {
     resettable?: boolean
     disabled?: boolean
     required?: boolean
+    className?: string
 }
 
 const ReferenceSelect: FC<IReferenceSelectProps> = (props) => {
 
     const {resource, value, onChange, label, placeholder, multiple, valueField, labelField, resettable, labelRender
-        , disabled, required} = props;
+        , disabled, required, className} = props;
 
     const api = useApi();
 
@@ -61,6 +62,7 @@ const ReferenceSelect: FC<IReferenceSelectProps> = (props) => {
         disabled={loading || disabled}
         labelRender={labelRender}
         required={required}
+        className={className}
     />
 };
 

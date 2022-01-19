@@ -1,5 +1,6 @@
 export default {
     dashboard: "Панель управления",
+    admin: "Администратор",
     admins: "Администраторы",
     login: "Вход",
     logout: "Выход",
@@ -33,6 +34,8 @@ export default {
     buttons: {
         save: "Сохранить",
         create: "Создать",
+        unblock: "Разблокировать",
+        block: "Заблокировать",
     },
     messages: {
         defaultErrorText: "Что-то пошло не так. Попробуйте обновить страницу.",
@@ -127,4 +130,13 @@ export default {
     uniqueUsages: "Уникальные пользователи",
     commands: "Комманды",
     unhandled: "Необработанные",
+    subscribers: "Подписчики",
+    yes: "Да",
+    no: "Нет",
+    first_name: "Имя",
+    last_name: "Фамилия",
+    tid: "Telegram ID",
+    language: "Язык",
+    blocked: "Заблокирован",
+    advanced: "Дополнительно",
 };

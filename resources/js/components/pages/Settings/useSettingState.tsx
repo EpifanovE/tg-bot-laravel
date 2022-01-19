@@ -8,7 +8,7 @@ import useIsMounted from "../../../hooks/useIsMounted";
 const useSettingState = () => {
 
     const api = useApi();
-    const {id} = useParams();
+    const {id} = useParams<{id: string}>();
     const [saving, setSaving] = useState(false);
 
     const [setting, setSetting] = useState<ISetting>({

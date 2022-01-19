@@ -7,8 +7,6 @@ namespace Tests\Feature;
 use App\Models\Admin\Admin;
 use Carbon\Carbon;
 use Database\Seeders\AdminSeeder;
-use Database\Seeders\SubscriberByDaySeeder;
-use Database\Seeders\SubscriberSeeder;
 use Database\Seeders\SubscriberUniqueUsageByDaysTestSeeder;
 use Database\Seeders\SubscriberUniqueUsageByMonthsTestSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;

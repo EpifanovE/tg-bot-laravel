@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
 import {IRootState} from "../../../store/reducers/rootReducer";
 import {IAdminState} from "../../../store/reducers/adminReducer";
@@ -42,7 +42,7 @@ const ResetPasswordRequest = (props) => {
     };
 
     if (isLoggedIn) {
-        return <Redirect to={`/`} />
+        return <Navigate to={`/`} />
     }
 
     return <div className="container d-flex flex-column justify-content-center">

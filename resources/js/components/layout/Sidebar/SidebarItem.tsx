@@ -11,7 +11,10 @@ interface ISidebarItemProps {
 
 const SidebarItem: FC<ISidebarItemProps> = ({to, label, icon, iconColor}) => {
     return <li className="c-sidebar-nav-item">
-            <NavLink to={to} className="c-sidebar-nav-link" activeClassName="c-active" exact>
+            <NavLink to={to} className={({isActive}) => {
+                return `c-sidebar-nav-link${isActive ? " c-active" : ""}`
+            }
+            }>
                 {
                     icon &&
                     <Icon name={icon} className={`c-sidebar-nav-icon${iconColor ? " text-" + iconColor : ""}`}/>

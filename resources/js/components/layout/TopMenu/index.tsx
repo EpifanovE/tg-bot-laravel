@@ -8,7 +8,9 @@ const TopMenu = (props) => {
 
     return <ul className="c-header-nav d-md-down-none">
         <li className="c-header-nav-item px-3">
-            <NavLink to="/" className="c-header-nav-link" activeClassName="c-active" exact>
+            <NavLink to="/"  className={({isActive}) => {
+                return `c-header-nav-link${isActive ? " c-active" : ""}`
+            }}>
                 {t("dashboard")}
             </NavLink>
         </li>

@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from "react";
 import Spinner from "../../layout/Ui/Spinner";
-import {useParams, Redirect} from "react-router-dom";
+import {useParams, Navigate} from "react-router-dom";
 import {getErrorResponseMessages} from "../../../utils/errors";
 import ApiProvider from "../../../api/apiProvider";
-import Col from "../../layout/Ui/Col";
 import {showAlerts, successAlert} from "../../../utils/alerts";
 
 const Verification = () => {
-    const {token, email} = useParams();
+    const {token, email} = useParams<{token: string, email: string}>();
 
     const [loading, setLoading] = useState(true);
     const [fail, setFail] = useState(false);
@@ -46,7 +45,7 @@ const Verification = () => {
         }
 
         if (!fail) {
-            return <Redirect to="/login" />
+            return <Navigate to="/login" />
         }
 
         return <></>

@@ -35,7 +35,7 @@ const DropdownMenu : FC<IDropdownMenuProps> = (props) => {
         onClick={e => {e.preventDefault();handleItemClick(key)}}
     >{choices[key]}</a>);
 
-    return <div className={`btn-group${dropup ? ' ' + dropup : ''}`}>
+    return <div className={`btn-group${dropup ? ' ' + 'dropup' : ''}`}>
         <button
             className={`btn${mode ? " btn-" + mode : ""}${size ? " btn-" + size : ""} dropdown-toggle`}
             type="button"

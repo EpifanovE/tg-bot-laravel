@@ -3,7 +3,7 @@ import {AxiosResponse} from "axios";
 export interface Response<T = any> extends AxiosResponse<T> {}
 
 export interface IApiProvider {
-    getOne: <T>(resource: string, id: number) => Promise<void | Response<T>>,
+    getOne: <T>(resource: string, id: string) => Promise<void | Response<T>>,
     getMany: <T>(resource: string, data?: { filter?: { [p: string]: string | number | Array<any> | null }; perPage?: number; paginate?: number; page?: number; sort?: Array<string> }) => Promise<void | Response<T>>,
     update: <T>(resource: string, data: IUpdateRequest) => Promise<void | Response<T>>,
     create: <T>(resource: string, data?: ICreateRequest) => Promise<void | Response<T>>,
@@ -32,7 +32,7 @@ export interface ICreateRequest {
 }
 
 export interface IUpdateRequest {
-    id: number,
+    id: string,
     data: any
 }
 

@@ -15,7 +15,7 @@ interface IWrapperProps {
 
 const Wrapper: FC<IWrapperProps> = ({children, breadcrumbs}) => {
 
-    const {id} = useParams();
+    const {id} = useParams<{id: string}>();
 
     const dispatch = useDispatch();
     const {notFound} = useSelector<IRootState, IAppState>(state => state.app);

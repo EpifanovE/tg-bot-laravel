@@ -58,6 +58,15 @@ const Sidebar = (props) => {
             }
 
             {
+                (adminCan("subscribers.manage") || adminCan("subscribers.view")) &&
+                <SidebarItem
+                    to="/subscribers"
+                    label={t("subscribers")}
+                    icon="people"
+                />
+            }
+
+            {
                 (adminCan("admins.manage") || adminCan("roles.manage") || adminCan("roles.view") || adminCan("admins.view")) &&
                 <DropdownItem
                     label={t("access")}

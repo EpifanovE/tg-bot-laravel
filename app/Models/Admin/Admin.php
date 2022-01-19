@@ -2,9 +2,11 @@
 
 namespace App\Models\Admin;
 
+use App\Models\Subscriber\Subscriber;
 use App\Notifications\PasswordReset;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -58,6 +60,11 @@ class Admin extends Authenticatable
     public function permissions(): array
     {
         return $this->roles->pluck("permissions")->flatten()->toArray();
+    }
+
+    public function subscriber(): BelongsTo
+    {
+        return $this->belongsTo(Subscriber::class);
     }
 
     public function verifyToken(): HasOne

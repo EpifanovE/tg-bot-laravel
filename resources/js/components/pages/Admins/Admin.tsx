@@ -2,7 +2,7 @@ import React, {FC} from "react";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import moment from "moment";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
 import {IRootState} from "../../../store/reducers/rootReducer";
 import {IAdminState} from "../../../store/reducers/adminReducer";
@@ -38,7 +38,7 @@ const Admin: FC<IAdminProps> = () => {
     }
 
     if (createdAdminId) {
-        return <Redirect to={`/admins/${createdAdminId}`}/>
+        return <Navigate to={`/admins/${createdAdminId}`}/>
     }
 
 

@@ -74,6 +74,7 @@ const Roles: FC<IRolesProps> = () => {
         title={t("roles")}
         columns={columns}
         filters={filters}
+        creating={true}
     />;
 };
 

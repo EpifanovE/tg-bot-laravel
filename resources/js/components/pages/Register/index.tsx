@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import {NavLink, Redirect} from "react-router-dom";
+import {NavLink, Navigate} from "react-router-dom";
 import InputGroupText from "../../inputs/InputGroupText";
 import TextInput from "../../inputs/TextInput";
 import Button from "../../layout/Button";
@@ -72,7 +72,7 @@ const Register: FC = () => {
     };
 
     if (isLoggedIn) {
-        return <Redirect to={`${prevPath ? prevPath : "/"}`}/>
+        return <Navigate to={`${prevPath ? prevPath : "/"}`}/>
     }
 
     return (

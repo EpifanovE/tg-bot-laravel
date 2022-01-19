@@ -4,9 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\LogEvent\LogEvent;
 use App\Models\Subscriber\Subscriber;
-use Carbon\Carbon;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class SubscriberSeeder extends Seeder
 {
@@ -52,10 +50,10 @@ class SubscriberSeeder extends Seeder
             $multiplier++;
         }
 
-//        LogEvent::factory()
-//            ->unhandled()
-//            ->count(500)
-//            ->create();
+        LogEvent::factory()
+            ->unhandled()
+            ->count(500)
+            ->create();
     }
 
     public function addStartGoogleEvent(Subscriber $subscriber)
