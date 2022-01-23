@@ -1,16 +1,25 @@
 import React, {FC} from "react";
-import {SortableHandle} from "react-sortable-hoc";
 import {TextColumn} from "./index";
 import EditAction from "./EditAction";
 import DeleteAction from "./DeleteAction";
 import Checkbox from "../../inputs/Checkbox";
 import {ITableItemProps} from "./types";
-import {DELETE_ACTION, EDIT_ACTION} from "./constants";
-import {useTranslation} from "react-i18next";
 
 const TableItem: FC<ITableItemProps> = (props) => {
 
-    const {resource, item, columns, actions, onActionClick, onCheckItemClick, checked, deleting, size, displaySortable, disableActions, disableBulkActions} = props;
+    const {
+        resource,
+        item,
+        columns,
+        actions,
+        onActionClick,
+        onCheckItemClick,
+        checked,
+        deleting,
+        size,
+        disableActions,
+        bulkActions,
+    } = props;
 
     const handleCheckClick = (e: React.ChangeEvent<HTMLInputElement>) => {
         onCheckItemClick(parseInt(e.target.value));
@@ -49,7 +58,7 @@ const TableItem: FC<ITableItemProps> = (props) => {
             </span></td>);
         } else {
             rowEls.push(<td key="actions" className="align-middle"><span className="d-flex">
-                        <EditAction id={item.id} resource={resource} size={size}/>
+                        <EditAction id={item.id} resource={resource} size={size} />
                         <DeleteAction
                             id={item.id}
                             onClick={onActionClick}
@@ -60,15 +69,7 @@ const TableItem: FC<ITableItemProps> = (props) => {
         }
     }
 
-    const RowHandler = SortableHandle(() => <td className="align-middle"><span className="MoveButton">
-        <i className="cil-options MoveButton__Icon"/>
-    </span></td>);
-
-    if (displaySortable) {
-        rowEls.push(<RowHandler key="sort"/>);
-    }
-
-    if (!disableBulkActions) {
+    if (bulkActions) {
         rowEls.unshift(<td className="align-middle" key="check">
             <Checkbox
                 value={`${item.id}`}

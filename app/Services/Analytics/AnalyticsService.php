@@ -13,14 +13,16 @@ class AnalyticsService
 {
     public function newSubscribersChart(array $requestData): array
     {
+        $filter = json_decode($requestData['filter'] ?? '{}', true);
+
         $builder = LogEvent::subscribe();
 
-        if (!empty($requestData["payload"])) {
-            $builder->withPayload($requestData["payload"]);
+        if (!empty($filter["payload"])) {
+            $builder->withPayload($filter["payload"]);
         }
 
         $periodBuilder = new PeriodBuilder();
-        $periodBuilder->byRequest($requestData);
+        $periodBuilder->byRequest($filter["period"] ?? ["key" => "month",]);
 
         $chartData = new ChartData($builder, $periodBuilder);
 
@@ -31,16 +33,17 @@ class AnalyticsService
 
     public function newSubscribersTable(array $requestData): array
     {
-        $orderBy = $requestData["sortBy"] ?? "count";
-        $orderDirection = $requestData["sortDirection"] ?? "desc";
+        $filter = json_decode($requestData['filter'] ?? '{}', true);
+
+        $sort = !empty($requestData["sort"]) ? json_decode($requestData["sort"], true) : [];
 
         $periodBuilder = new PeriodBuilder();
-        $periodBuilder->byRequest($requestData);
+        $periodBuilder->byRequest($filter["period"] ?? ["key" => "month",]);
 
         $builder = LogEvent::subscribe();
 
-        if (!empty($requestData["payload"])) {
-            $builder->withPayload($requestData["payload"]);
+        if (!empty($filter["payload"])) {
+            $builder->withPayload($filter["payload"]);
         }
 
         return $builder
@@ -48,12 +51,16 @@ class AnalyticsService
             ->whereDate(DB::raw("log_events.created_at"), '<=', $periodBuilder->getTo())
             ->selectRaw('count(*) as count, payload')
             ->groupBy("payload")
-            ->orderBy($orderBy, $orderDirection)
+            ->orderBy(
+                $sort["field"] ?? "count",
+                $sort["order"] ?? "desc"
+            )
             ->get()->toArray();
     }
 
     public function uniqueUsagesChart(array $requestData): array
     {
+        $filter = json_decode($requestData['filter'] ?? '{}', true);
 
         $builder = LogEvent::query()
             ->select("subscriber_id", DB::raw("DATE(created_at) as created_at"))
@@ -61,7 +68,7 @@ class AnalyticsService
             ->groupBy("subscriber_id", DB::raw("DATE(created_at)"));
 
         $periodBuilder = new PeriodBuilder();
-        $periodBuilder->byRequest($requestData);
+        $periodBuilder->byRequest($filter["period"] ?? ["key" => "month",]);
 
         $chartData = new ChartData($builder, $periodBuilder);
 
@@ -72,15 +79,17 @@ class AnalyticsService
 
     public function commandsChart(array $requestData): array
     {
+        $filter = json_decode($requestData['filter'] ?? '{}', true);
+
         $builder = LogEvent::query()
             ->where("code", "!=", LogEvent::COMMAND_UNHANDLED);
 
-        if (!empty($requestData["code"])) {
-            $builder->withCode($requestData["code"]);
+        if (!empty($filter["code"])) {
+            $builder->withCode($filter["code"]);
         }
 
         $periodBuilder = new PeriodBuilder();
-        $periodBuilder->byRequest($requestData);
+        $periodBuilder->byRequest($filter["period"] ?? ["key" => "month",]);
 
         $chartData = new ChartData($builder, $periodBuilder);
 
@@ -91,16 +100,17 @@ class AnalyticsService
 
     public function commandsTable(array $requestData): array
     {
-        $orderBy = $requestData["sortBy"] ?? "count";
-        $orderDirection = $requestData["sortDirection"] ?? "desc";
+        $filter = json_decode($requestData['filter'] ?? '{}', true);
+
+        $sort = !empty($requestData["sort"]) ? json_decode($requestData["sort"], true) : [];
 
         $periodBuilder = new PeriodBuilder();
-        $periodBuilder->byRequest($requestData);
+        $periodBuilder->byRequest($filter["period"] ?? ["key" => "month",]);
 
         $builder = LogEvent::query();
 
-        if (!empty($requestData["code"])) {
-            $builder->withCode($requestData["code"]);
+        if (!empty($filter["code"])) {
+            $builder->withCode($filter["code"]);
         }
 
         return $builder
@@ -108,7 +118,10 @@ class AnalyticsService
             ->whereDate(DB::raw("log_events.created_at"), '<=', $periodBuilder->getTo())
             ->selectRaw('count(*) as count, code')
             ->groupBy("code")
-            ->orderBy($orderBy, $orderDirection)
+            ->orderBy(
+                $sort["field"] ?? "count",
+                $sort["order"] ?? "desc"
+            )
             ->get()
             ->map(function ($row) {
                 if (Lang::has("bot.events.{$row->code}")) {
@@ -120,14 +133,16 @@ class AnalyticsService
 
     public function unhandledChart(array $requestData): array
     {
+        $filter = json_decode($requestData['filter'] ?? '{}', true);
+
         $builder = LogEvent::unhandled();
 
-        if (!empty($requestData["payload"])) {
-            $builder->withPayload($requestData["payload"]);
+        if (!empty($filter["payload"])) {
+            $builder->withPayload($filter["payload"]);
         }
 
         $periodBuilder = new PeriodBuilder();
-        $periodBuilder->byRequest($requestData);
+        $periodBuilder->byRequest($filter["period"] ?? ["key" => "month",]);
 
         $chartData = new ChartData($builder, $periodBuilder);
 
@@ -138,26 +153,20 @@ class AnalyticsService
 
     public function unhandledTable(array $requestData)
     {
-        $orderBy = "count";
-        $orderDirection = "desc";
+        $filter = json_decode($requestData['filter'] ?? '{}', true);
 
-        if (!empty($requestData["sort"])) {
-            $order = json_decode($requestData["sort"]);
-
-            $orderBy = $order[0];
-            $orderDirection = $order[1] ?? "desc";
-        }
+        $sort = !empty($requestData["sort"]) ? json_decode($requestData["sort"], true) : [];
 
         $periodBuilder = new PeriodBuilder();
-        $periodBuilder->byRequest($requestData);
+        $periodBuilder->byRequest($filter["period"] ?? ["key" => "month",]);
 
         /**
          * @var Builder $builder
          */
         $builder = LogEvent::unhandled();
 
-        if (!empty($requestData["payload"])) {
-            $builder->withPayload($requestData["payload"]);
+        if (!empty($filter["payload"])) {
+            $builder->withPayload($filter["payload"]);
         }
 
         return $builder
@@ -165,7 +174,10 @@ class AnalyticsService
             ->whereDate(DB::raw("log_events.created_at"), '<=', $periodBuilder->getTo())
             ->selectRaw('count(*) as count, payload, (@i:= @i+1) as id')
             ->groupBy("payload")
-            ->orderBy($orderBy, $orderDirection)
+            ->orderBy(
+                $sort["field"] ?? "count",
+                $sort["order"] ?? "desc"
+            )
             ->paginate($requestData['perPage'] ?? 25);
     }
 }

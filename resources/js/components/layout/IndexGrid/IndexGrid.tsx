@@ -1,57 +1,52 @@
 import React, {FC, useEffect, useState} from "react";
 
-import ApiProvider from "../../../api/apiProvider";
-import {IGetManyRequest, IGetManyResponse} from "../../../types/api";
+import {IGetManyResponse} from "../../../types/api";
 import DataTable from "./DataTable";
 import {Pagination} from "./index";
-import {IDataGridProps, IFilterData} from "./types";
-import {DELETE_ACTION, EDIT_ACTION, SORT_ASC, SORT_DESC} from "./constants";
-import Filters from "./Filters";
+import {IDataGridProps} from "./types";
+import {DEFAULT_PAGE, DEFAULT_PER_PAGE, DELETE_ACTION, SORT_ASC, SORT_DESC} from "./constants";
 import PerPage from "./PerPage";
 import {useTranslation} from "react-i18next";
 import BulkActions, {BULK_DELETE_ACTION} from "./BulkActions";
 import {useDebouncedEffect} from "../../../hooks/useDebounceEffect";
+import {useApi} from "../../../hooks/useApi";
 
-export const DEFAULT_PER_PAGE = "25";
+const IndexGrid: FC<IDataGridProps> = (props) => {
 
-const DataGrid: FC<IDataGridProps> = (props) => {
-
-    const {resource, columns, actions, filters, size, sortableSource, defaultSortColumn, defaultSortDirection,
-        queryParams, disableBulkActions, disableActions, keyProp, className, fixedColumns} = props;
+    const {
+        resource,
+        columns,
+        actions,
+        size,
+        queryParams,
+        keyProp,
+        className,
+        fixedColumns,
+        page,
+        onChangePage,
+        perPage,
+        onChangePerPage,
+        sort,
+        onChangeSort,
+        filter,
+        bulkActions,
+        disableActions,
+    } = props;
 
     const {t} = useTranslation();
+    const api = useApi();
 
     const [responseData, setResponseData] = useState<IGetManyResponse<any>>({});
-    const [requestData, setRequestData] = useState<IGetManyRequest>({});
     const [deletingItems, setDeletingItems] = useState<Array<number>>([]);
     const [checkedItems, setCheckedItems] = useState<Array<number>>([]);
-    const [sortable, setSortable] = useState<string>();
-    const [sortDirection, setSortDirection] = useState<string>(SORT_DESC);
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingError, setLoadingError] = useState<boolean>(false);
 
-    const {page = 1, perPage = DEFAULT_PER_PAGE, filter = {}} = requestData;
     const {data: items = [], meta} = responseData;
 
     useEffect(() => {
-        if (defaultSortColumn) {
-            setSortable(defaultSortColumn);
-            setSortDirection(defaultSortDirection ? defaultSortDirection : SORT_ASC);
-        }
-    }, [defaultSortColumn]);
-
-    useDebouncedEffect(() => {
         fetchItems()
-    }, 500, [requestData, queryParams])
-
-    useEffect(() => {
-        if (sortable) {
-            setRequestData({
-                ...requestData,
-                sort: [sortable, sortDirection]
-            });
-        }
-    }, [sortable, sortDirection]);
+    }, [perPage, sort, page, filter, queryParams]);
 
     const fetchItems = () => {
         if (loading) return;
@@ -60,8 +55,14 @@ const DataGrid: FC<IDataGridProps> = (props) => {
 
         setCheckedItems([]);
 
-        ApiProvider
-            .getMany<IGetManyResponse<any>>(resource , {...requestData, ...queryParams, perPage: parseInt(requestData.perPage || DEFAULT_PER_PAGE)})
+        api
+            .getMany<IGetManyResponse<any>>(resource, {
+                ...queryParams,
+                page: parseInt(page || DEFAULT_PAGE),
+                perPage: parseInt(perPage || DEFAULT_PER_PAGE),
+                sort: sort || undefined,
+                filter: filter || undefined
+            })
             .then(response => {
                 if (response?.data) {
                     setResponseData(response.data);
@@ -87,7 +88,8 @@ const DataGrid: FC<IDataGridProps> = (props) => {
             id
         ]);
 
-        ApiProvider.delete(resource, id)
+        api
+            .delete(resource, id)
             .then(response => {
                 fetchItems();
             })
@@ -103,7 +105,7 @@ const DataGrid: FC<IDataGridProps> = (props) => {
             ...checkedItems,
         ]);
 
-        ApiProvider
+        api
             .deleteMany(resource, checkedItems)
             .then(response => {
                 fetchItems();
@@ -114,10 +116,9 @@ const DataGrid: FC<IDataGridProps> = (props) => {
     };
 
     const handlePageClick = (page: number) => {
-        setRequestData({
-            ...requestData,
-            page: page
-        })
+        if (onChangePage) {
+            onChangePage(page.toString());
+        }
     };
 
     const handleActionClick = (id: number, actionName: string) => {
@@ -152,33 +153,21 @@ const DataGrid: FC<IDataGridProps> = (props) => {
 
     const handleChangeSortable = (source: string) => {
 
-        if (sortable !== source) {
-            setSortDirection(SORT_DESC)
-        } else if (sortDirection === SORT_DESC) {
-            setSortDirection(SORT_ASC)
+        if (!onChangeSort) return;
+
+        if (sort?.field !== source) {
+            onChangeSort({field: source, order: SORT_DESC})
+        } else if (sort?.order === SORT_DESC) {
+            onChangeSort({field: source, order: SORT_ASC})
         } else {
-            setSortDirection(SORT_DESC)
+            onChangeSort({field: source, order: SORT_DESC})
         }
-
-        setSortable(source);
     };
 
-    const handleChangeFilter = ({source, value}: IFilterData) => {
-
-        setRequestData({
-            ...requestData,
-            filter: {
-                ...requestData.filter,
-                [source] : value
-            }
-        })
-    };
-
-    const handleChangePerPage = (perPage: string) => {
-        setRequestData({
-            ...requestData,
-            perPage: perPage
-        })
+    const handleChangePerPage = (perPage?: string) => {
+        if (onChangePerPage) {
+            onChangePerPage(perPage);
+        }
     };
 
     const handleBulkActionChange = (actionName: string) => {
@@ -200,20 +189,11 @@ const DataGrid: FC<IDataGridProps> = (props) => {
     }
 
     return <div className="DataGrid">
-        {
-            (!!filters && !!filters.length) &&
-            <Filters
-                filters={filters}
-                onChange={handleChangeFilter}
-                values={filter}
-                size={size}
-            />
-        }
         <div className="position-relative">
             <DataTable
                 columns={columns}
                 items={items}
-                perPage={perPage}
+                perPage={perPage || DEFAULT_PER_PAGE}
                 actions={actions}
                 onActionClick={handleActionClick}
                 deletingItems={deletingItems}
@@ -221,53 +201,55 @@ const DataGrid: FC<IDataGridProps> = (props) => {
                 checkedItems={checkedItems}
                 onCheckItemClick={handleCheck}
                 onCheckAllClick={handleCheckAll}
-                sortable={sortable}
-                sortDirection={sortDirection}
+                sortable={sort?.field}
+                sortDirection={sort?.order}
                 onChangeSortable={handleChangeSortable}
                 size={size}
                 loading={loading}
-                disableBulkActions={disableBulkActions}
-                disableActions={disableActions}
                 keyProp={keyProp}
                 className={className}
                 fixedColumns={fixedColumns}
+                bulkActions={bulkActions}
+                disableActions={disableActions}
             />
             {
                 loading &&
-                    <div className="Overlay"/>
+                <div className="Overlay"/>
             }
         </div>
         {
             !!checkedItems.length &&
             <div className="row">
                 <div className="col-12 d-flex">
-                    <BulkActions onSelect={handleBulkActionChange}/>
+                    <BulkActions onSelect={handleBulkActionChange} actions={bulkActions}/>
                 </div>
             </div>
         }
         <div className="row">
             <div className="col-12 col-lg-6">
-            {
-                meta?.last_page && meta.last_page > 1 &&
-                <Pagination
-                    current={page}
-                    lastPage={meta.last_page}
-                    onClick={handlePageClick}
-                    size={size}
-                />
-            }
+                {
+                    meta?.last_page && meta.last_page > 1 &&
+                    <Pagination
+                        current={parseInt(page || DEFAULT_PAGE)}
+                        lastPage={meta.last_page}
+                        onClick={handlePageClick}
+                        size={size}
+                        disabled={loading}
+                    />
+                }
             </div>
             <div className="col-12 col-lg-6 d-flex justify-content-end">
                 <PerPage
                     onChange={handleChangePerPage}
                     choices={{10: "10", 25: "25", 50: "50"}}
-                    value={perPage}
+                    value={perPage || ""}
                     size={size}
                     label={t("perPage")}
+                    disabled={loading}
                 />
             </div>
         </div>
     </div>
 };
 
-export default DataGrid;
+export default IndexGrid;

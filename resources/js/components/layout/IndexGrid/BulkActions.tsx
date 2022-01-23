@@ -5,7 +5,7 @@ import {useTranslation} from "react-i18next";
 
 export const BULK_DELETE_ACTION = "delete";
 
-const BulkActions: FC<IBulkActionsProps> = ({onSelect}) => {
+const BulkActions: FC<IBulkActionsProps> = ({onSelect, actions}) => {
 
     const {t} = useTranslation();
 
@@ -15,10 +15,6 @@ const BulkActions: FC<IBulkActionsProps> = ({onSelect}) => {
         onSelect(action);
     }, [action]);
 
-    const actions = {
-        [BULK_DELETE_ACTION]: t("deleteAction")
-    };
-
     const handleChange = (value: Array<string>) => {
         setAction(value[0]);
     };
@@ -26,7 +22,7 @@ const BulkActions: FC<IBulkActionsProps> = ({onSelect}) => {
     return <SelectInput
         onChange={handleChange}
         value={[action]}
-        choices={actions}
+        choices={actions || {}}
         canBeEmpty={true}
         emptyText={t("chooseAction")}
     />

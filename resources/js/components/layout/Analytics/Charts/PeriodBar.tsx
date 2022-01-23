@@ -2,10 +2,9 @@ import React, {FC, useEffect} from "react";
 import {useTranslation} from "react-i18next";
 import Datetime from 'react-datetime';
 
-import "react-datetime/css/react-datetime.css";
 import {Moment} from "moment";
 import SelectInput from "../../../inputs/SelectInput";
-import {Period} from "./MainChart";
+import {Period} from "./Chart";
 
 interface IPeriodBarProps {
     value: string

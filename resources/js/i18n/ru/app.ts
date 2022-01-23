@@ -36,6 +36,10 @@ export default {
         create: "Создать",
         unblock: "Разблокировать",
         block: "Заблокировать",
+        apply: "Применить",
+        reset: "Сброс",
+        open: "Открыть",
+        close: "Закрыть",
     },
     messages: {
         defaultErrorText: "Что-то пошло не так. Попробуйте обновить страницу.",
@@ -139,4 +143,5 @@ export default {
     language: "Язык",
     blocked: "Заблокирован",
     advanced: "Дополнительно",
+    filters: "Фильтры",
 };

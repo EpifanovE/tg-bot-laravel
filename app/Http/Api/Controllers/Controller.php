@@ -24,7 +24,9 @@ class Controller extends BaseController
         }
 
         if (!empty($sort = json_decode($data['sort'] ?? '{}', true))) {
-            $query = $query->orderBy($sort[0], $sort[1]);
+            if (!empty($sort["field"]) && !empty($sort["order"])) {
+                $query = $query->orderBy($sort["field"], $sort["order"]);
+            }
         }
 
         if (!isset($data["paginate"]) || $data["paginate"] !== "0") {

@@ -1,90 +1,53 @@
-import React, {FC, useState} from "react";
+import React, {FC, } from "react";
 import {useTranslation} from "react-i18next";
 import useAccess from "../../../hooks/useAccess";
-import MainChart, {Period, Step} from "../../layout/Analytics/Charts/MainChart";
-import moment, {Moment} from "moment";
-import Card from "../../layout/Ui/Card/Card";
-import CardBody from "../../layout/Ui/Card/CardBody";
-import PeriodBar from "../../layout/Analytics/Charts/PeriodBar";
+import Chart, {Period, Step} from "../../layout/Analytics/Charts/Chart";
+import Row from "../../layout/Ui/Row";
+import Col from "../../layout/Ui/Col";
+import Filters from "../../layout/IndexGrid/Filters";
+import PeriodFilter from "../../layout/IndexGrid/filters/PeriodFilter";
+import useIndexGridProps from "../../layout/IndexGrid/useIndexGridProps";
 
 const UniqueUsages: FC = () => {
     const {t} = useTranslation();
 
     const {disallow, messageComponent} = useAccess(["analytics.view"]);
 
-    const [queryParams, setQueryParams] = useState<{
-        key: Period
-        from?: Moment | string
-        to?: Moment | string
-        step?: Step
-    }>({
-        key: "month",
-        from: moment().startOf('month'),
-        to: moment(),
-        step: "day"
+    const {
+        filter,
+        setFilter,
+    } = useIndexGridProps({
+        filter: {
+            period: {
+                key: "month"
+            }
+        }
     });
 
     if (disallow) {
         return messageComponent;
     }
 
-    const handlePeriodChange = (value: Period) => {
-        setQueryParams({
-            ...queryParams,
-            key: value
-        });
-    }
-
-    const handleFromChange = (value: Moment | string) => {
-        setQueryParams({
-            ...queryParams,
-            from: value
-        })
-    }
-
-    const handleToChange = (value: Moment | string) => {
-        setQueryParams({
-            ...queryParams,
-            to: value
-        })
-    }
-
-    const handleStepChange = (value: Array<string>) => {
-        setQueryParams({
-            ...queryParams,
-            step: value[0] as Step
-        })
-    }
-
     return <div>
 
-        <Card>
-            <CardBody className={`d-flex align-items-start`}>
-                <PeriodBar
-                    value={queryParams.key}
-                    onChange={handlePeriodChange}
-                    from={queryParams.from}
-                    to={queryParams.to}
-                    step={queryParams.step}
-                    onFromChange={handleFromChange}
-                    onToChange={handleToChange}
-                    onStepChange={handleStepChange}
-                    className={`mr-4`}
+        <Row>
+            <Col width={{"sm": 12}}>
+                <Filters
+                    filters={[
+                        <PeriodFilter source={`period`} value={filter?.period} width={{sm: 12}} />,
+                    ]}
+                    onChange={setFilter}
+                    values={filter}
                 />
-            </CardBody>
-        </Card>
+            </Col>
+        </Row>
 
         <div>
-            <MainChart
+            <Chart
                 resource="uniqueUsages"
                 type={`line`}
-                period={queryParams.key}
-                periodBar={false}
-                from={queryParams.from}
-                to={queryParams.to}
-                step={queryParams.step}
-                queryParams={queryParams}
                 label={t("uniqueUsages")}
+                filter={filter}
             />
         </div>
     </div>

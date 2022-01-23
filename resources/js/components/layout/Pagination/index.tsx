@@ -6,6 +6,7 @@ interface IPaginationProps {
     onClick: (page: number) => void
     lastPage?: number
     size?: Size
+    disabled?: boolean
 }
 
 interface INumberItem {
@@ -13,7 +14,15 @@ interface INumberItem {
     value: string
 }
 
-const Pagination: FC<IPaginationProps> = ({current, onClick, lastPage, size}) => {
+const Pagination: FC<IPaginationProps> = (props) => {
+
+    const {
+        current,
+        onClick,
+        lastPage,
+        size,
+        disabled,
+    } = props;
 
     const neighbours = 2;
 
@@ -94,7 +103,7 @@ const Pagination: FC<IPaginationProps> = ({current, onClick, lastPage, size}) =>
             {
                 number.key === current ?
                     <span className="page-link">{number.value}</span> :
-                    <button className="page-link" onClick={e => {e.preventDefault();handleClick(number.value)}}>
+                    <button className="page-link" onClick={e => {e.preventDefault();handleClick(number.value)}} disabled={disabled}>
                         {number.value}
                     </button>
             }
@@ -106,7 +115,7 @@ const Pagination: FC<IPaginationProps> = ({current, onClick, lastPage, size}) =>
             <button
                 className="page-link"
                 onClick={handlePrevClick}
-                disabled={current === 1}
+                disabled={current === 1 || disabled}
             >
                 &laquo;
             </button>
@@ -116,7 +125,7 @@ const Pagination: FC<IPaginationProps> = ({current, onClick, lastPage, size}) =>
             <button
                 className="page-link"
                 onClick={handleNextClick}
-                disabled={!!lastPage && (current === lastPage)}
+                disabled={!!lastPage && (current === lastPage) || disabled}
             >
                 &raquo;
             </button>

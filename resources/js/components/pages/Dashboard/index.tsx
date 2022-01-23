@@ -2,11 +2,7 @@ import React, {useEffect} from "react";
 import {useDispatch} from "react-redux";
 import {useTranslation} from "react-i18next";
 import {setBreadcrumbs} from "../../../store/actions/appActions";
-import MainChart from "../../layout/Analytics/Charts/MainChart";
-import Row from "../../layout/Ui/Row";
-import Col from "../../layout/Ui/Col";
-
-
+import MainChart from "../../layout/Widgets/MainChart";
 
 const Dashboard = (props) => {
 
@@ -19,16 +15,11 @@ const Dashboard = (props) => {
         ]));
     }, []);
 
-    return <div>
-        <MainChart
-            resource="newSubscribers"
-            type={`line`}
-            period={`month`}
-            title={t('newSubscribers')}
-            periodBar={true}
-            label={t("newSubscribers")}
-        />
-    </div>
+    return (
+        <>
+            <MainChart />
+        </>
+    )
 };
 
 export default Dashboard;

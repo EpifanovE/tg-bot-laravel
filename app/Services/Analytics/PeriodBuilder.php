@@ -43,6 +43,7 @@ class PeriodBuilder
             $this->to->endOfDay();
 
         } else {
+
             $methodName = $this->getPeriodMethodName($data["key"]);
 
             $this->$methodName();

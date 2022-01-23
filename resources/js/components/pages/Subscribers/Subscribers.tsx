@@ -6,8 +6,8 @@ import {IAdminState} from "../../../store/reducers/adminReducer";
 import useAccess from "../../../hooks/useAccess";
 import Badge from "../../layout/Badge/Badge";
 import moment from "moment";
-import TextFilter from "../../layout/DataGrid/filters/TextFilter";
-import SelectFilter from "../../layout/DataGrid/filters/SelectFilter";
+import TextFilter from "../../layout/IndexGrid/filters/TextFilter";
+import SelectFilter from "../../layout/IndexGrid/filters/SelectFilter";
 import IndexPage from "../../layout/IndexPage";
 import {ISubscribersItem} from "./types";
 
@@ -83,7 +83,12 @@ const Subscribers: FC = () => {
     ];
 
     const filters = [
-        <TextFilter source="search" label={`${t("search")}...`} width={{lg: 6}} />,
+        <TextFilter
+            source="search"
+            label={`${t("search")}...`}
+            width={{lg: 6}}
+        />,
+
         <SelectFilter
             source="blocked"
             choices={

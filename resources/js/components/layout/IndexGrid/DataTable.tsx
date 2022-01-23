@@ -2,19 +2,30 @@ import React, {FC} from "react";
 
 import TableItem from "./TableItem";
 import Checkbox from "../../inputs/Checkbox";
-import DummyRow from "./DummyRow";
 import {IDataTableProps} from "./types";
 import SortableTitle from "./SortableTitle";
-import {DEFAULT_PER_PAGE} from "./DataGrid";
 
 const DataTable: FC<IDataTableProps> = (props) => {
 
     const {
-        columns, items, perPage, actions, onActionClick, deletingItems, resource,
+        columns,
+        items,
+        actions,
+        onActionClick,
+        deletingItems,
+        resource,
         checkedItems,
         onCheckItemClick,
-        onCheckAllClick, sortable, sortDirection, onChangeSortable, size, loading, disableBulkActions, disableActions,
-        keyProp, className, fixedColumns
+        onCheckAllClick,
+        sortable,
+        sortDirection,
+        onChangeSortable,
+        size,
+        disableActions,
+        keyProp,
+        className,
+        fixedColumns,
+        bulkActions,
     } = props;
 
     const handleSortClick = (source: string) => {
@@ -37,7 +48,7 @@ const DataTable: FC<IDataTableProps> = (props) => {
         }
     </th>);
 
-    if (!disableBulkActions) {
+    if (bulkActions) {
         headEls.unshift(<th key="check">
             <Checkbox
                 checked={!!checkedItems.length && checkedItems.length === items?.length}
@@ -62,10 +73,6 @@ const DataTable: FC<IDataTableProps> = (props) => {
     };
 
     const getItemsEls = () => {
-        if (loading) {
-            return Array.from(Array(parseInt(perPage || DEFAULT_PER_PAGE)).keys())
-                .map(item => <DummyRow key={item} columns={columns} checkbox={!disableBulkActions} actions={!disableActions}/>)
-        }
 
         if (!items) {
             return;
@@ -83,10 +90,10 @@ const DataTable: FC<IDataTableProps> = (props) => {
             deleting: deletingItems.includes(item.id),
             size: size,
             disableActions,
-            disableBulkActions
+            bulkActions,
         });
 
-        return items.map(item => <TableItem {...getProps(item)} />);
+        return items.map(item => <TableItem {...getProps(item)} bulkActions={!!bulkActions} />);
     };
 
     return <table className={`table${size ? " table-" + size : ""}${className ? " " + className : ""}`} style={fixedColumns ? {tableLayout:"fixed"} : {}}>

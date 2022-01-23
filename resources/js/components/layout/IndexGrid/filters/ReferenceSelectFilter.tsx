@@ -1,5 +1,5 @@
 import React, {FC} from "react";
-import {IFilterData, IFilterProps} from "../types";
+import {IFilterComponentValue, IFilterProps} from "../types";
 import Col, {IColProps} from "../../Ui/Col";
 import ReferenceSelect from "../../../inputs/ReferenceSelect";
 
