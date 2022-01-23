@@ -9,14 +9,11 @@ class Setting extends Model
 {
     protected $fillable = [
         "code",
-        "name",
-        "type",
         "payload",
-        "built_in",
+        "payload->events",
     ];
 
     protected $casts = [
         "payload" => "array",
-        "built_in" => "boolean",
     ];
 }

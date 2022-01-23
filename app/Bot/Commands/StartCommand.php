@@ -6,6 +6,7 @@ namespace App\Bot\Commands;
 
 use App\Bot\Screens\Home;
 use App\Models\LogEvent\LogEvent;
+use App\Models\Setting\Setting;
 use App\Models\Subscriber\Subscriber;
 
 class StartCommand extends \WeStacks\TeleBot\Handlers\CommandHandler
@@ -16,7 +17,11 @@ class StartCommand extends \WeStacks\TeleBot\Handlers\CommandHandler
 
     public function handle()
     {
-        $this->subscriberHandle();
+        $settings = Setting::where("code", "analytics")->first();
+
+        if (!empty($settings->payload["events"]) && in_array(LogEvent::COMMAND_START, $settings->payload["events"])) {
+            $this->subscriberHandle();
+        }
 
         $this->sendMessage([
             "text" => "Здравствуйте!\n\nПриветственное сообщение Laravel."

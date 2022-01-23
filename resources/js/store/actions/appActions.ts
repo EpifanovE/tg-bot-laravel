@@ -1,7 +1,6 @@
 import {
     ADD_ALERT, CLEAR_ALERTS,
     NOTIFICATION_RECEIVED, REMOVE_ALERT,
-    SET_BREADCRUMBS,
     SET_LOGOUT_LOADING, SET_NOT_FOUND,
     SET_PREV_PATH,
     SET_SUBMITTING,
@@ -30,10 +29,6 @@ export const hideSidebar = () => {
 
 export const toggleMinimizedSidebar = () => {
     return {type: SIDEBAR_MINIMIZED_TOGGLE};
-};
-
-export const setBreadcrumbs = (breadcrumbs: Array<IBreadcrumb>) => {
-    return {type: SET_BREADCRUMBS, payload: breadcrumbs};
 };
 
 export const setPrevPath = (prevPath?: string) => {

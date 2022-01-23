@@ -6,12 +6,14 @@ import Alerts from "../Alerts/Alerts";
 import Row from "../Ui/Row";
 import {useDispatch} from "react-redux";
 import {clearAlerts} from "../../../store/actions/appActions";
+import {IBreadcrumb} from "../../../types/app";
 
 export interface MainProps {
     component: any
+    breadcrumbs?: Array<IBreadcrumb>
 }
 
-const Main = ({component}: MainProps) => {
+const Main = ({component, breadcrumbs}: MainProps) => {
 
     const dispatch = useDispatch();
 
@@ -20,7 +22,7 @@ const Main = ({component}: MainProps) => {
     }, []);
 
     return <div className="c-wrapper c-fixed-components">
-        <Header />
+        <Header breadcrumbs={breadcrumbs} />
         <div className="c-body">
             <main className="c-main">
                 <div className="container-fluid">

@@ -1,15 +1,18 @@
-import React from "react";
+import React, {FC} from "react";
 import {useSelector} from "react-redux";
 import {NavLink} from "react-router-dom";
 import {IRootState} from "../../../store/reducers/rootReducer";
 import {IAppState} from "../../../store/reducers/appReducer";
 import {useTranslation} from "react-i18next";
+import {IBreadcrumb} from "../../../types/app";
 
-const Breadcrumbs = () => {
+interface IBreadcrumbsProps {
+    breadcrumbs?: Array<IBreadcrumb>
+}
+
+const Breadcrumbs: FC<IBreadcrumbsProps> = ({breadcrumbs}) => {
 
     const {t} = useTranslation();
-
-    const {breadcrumbs} = useSelector<IRootState, IAppState>(state => state.app);
 
     if (!breadcrumbs || breadcrumbs.length === 0) {
         return <></>

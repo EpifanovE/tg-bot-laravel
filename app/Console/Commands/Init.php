@@ -4,7 +4,9 @@ namespace App\Console\Commands;
 
 use App\UseCases\Admin\AdminService;
 use App\UseCases\Admin\RoleService;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class Init extends Command
 {
@@ -44,5 +46,15 @@ class Init extends Command
         ]);
 
         $admin->roles()->attach($adminRole);
+
+        DB::table("settings")->insert([
+            [
+                "code" => "analytics",
+                "payload" => json_encode([
+                    "events" => config("bot.events"),
+                ]),
+                "created_at" => Carbon::now(),
+            ]
+        ]);
     }
 }

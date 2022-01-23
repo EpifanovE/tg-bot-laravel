@@ -27,7 +27,12 @@ const App = (props) => {
 
     const isLgScreen = useMediaQuery({query: BREAKPOINTS[SCREEN_LG]});
     const {i18n} = useTranslation();
-    const {isLoggedIn, loading: loadingProfile, locale, id} = useSelector<IRootState, IAdminState>(state => state.admin);
+    const {
+        isLoggedIn,
+        loading: loadingProfile,
+        locale,
+        id
+    } = useSelector<IRootState, IAdminState>(state => state.admin);
     const {sidebarClosed} = useSelector<IRootState, IAppState>(state => state.app);
 
     useEffect(() => {
@@ -64,23 +69,22 @@ const App = (props) => {
         return <div>Loading...</div>
     }
 
-    // const routeComponents = routes().map(({path, component: Component, isPublic, breadcrumbs}, key) => {
-    //     return isPublic
-    //         ? <Route path={path} element={<Component />} key={key}/>
-    //         : <ProtectedRoute path={path} render={() => <Wrapper breadcrumbs={breadcrumbs}><Component/></Wrapper>}
-    //                           key={key}/>;
-    // });
-
     const routeComponents = routes().map(({path, component: Component, isPublic, breadcrumbs}, key) => {
         return isPublic
-            ? <Route path={path} element={<Component />} key={key}/>
-            : <Route path={path} element={<RequireAuth><Wrapper breadcrumbs={breadcrumbs}><Component/></Wrapper></RequireAuth>}
-                              key={key}/>;
+            ? <Route path={path} element={<Component/>} key={key}/>
+            : <Route path={path} element={(
+                <RequireAuth>
+                    <Wrapper breadcrumbs={breadcrumbs}>
+                        <Component/>
+                    </Wrapper>
+                </RequireAuth>
+            )}
+             key={key}/>;
     });
 
     return <Routes>
         {routeComponents}
-        <Route element={<Page404 />}/>
+        <Route element={<Page404/>}/>
     </Routes>;
 };
 

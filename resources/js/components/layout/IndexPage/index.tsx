@@ -71,6 +71,7 @@ const IndexPage: FC<IIndexPageProps> = (props) => {
             }
         });
 
+        if (JSON.stringify(searchQuery) === "{}") return;
 
         setSearchParams(createSearchParams(searchQuery));
     }, [query]);

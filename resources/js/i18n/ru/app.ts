@@ -40,6 +40,9 @@ export default {
         reset: "Сброс",
         open: "Открыть",
         close: "Закрыть",
+        clean: "Очистить",
+        cleanAll: "Очистить все",
+        cleanToDate: "Очистить до даты",
     },
     messages: {
         defaultErrorText: "Что-то пошло не так. Попробуйте обновить страницу.",
@@ -48,6 +51,7 @@ export default {
         saveSuccess: "Сохранено.",
         createSuccess: "Создано.",
         noAccess: "У вас нет доступа к этому содержимому.",
+        analyticsCleaned: "Удалено записей: {{arg}}."
     },
     validation: {
         required: "Это поле обязательно",
@@ -95,6 +99,10 @@ export default {
     },
     errors: {
         fieldIsEmpty: "{{field}} не может быть пустым.",
+    },
+    events: {
+        c_start: "Команда /start",
+        unhandled: "Необработанные",
     },
     management: "Управление",
     customers: "Подписчики",
@@ -144,4 +152,7 @@ export default {
     blocked: "Заблокирован",
     advanced: "Дополнительно",
     filters: "Фильтры",
+    maintenance: "Обслуживание",
+    eventsToListen: "Отслеживание событий",
+    analyticsDeleting: "Удаление аналитики",
 };

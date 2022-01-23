@@ -1,11 +1,16 @@
-import React from "react";
+import React, {FC} from "react";
 import Breadcrumbs from "../Breadcrumbs";
 import TopMenu from "../TopMenu";
 import UserMenu from "../UserMenu";
 import {useDispatch} from "react-redux";
 import {toggleSidebar} from "../../../store/actions/appActions";
+import {IBreadcrumb} from "../../../types/app";
 
-const Header = (props) => {
+interface IHeaderProps {
+    breadcrumbs?: Array<IBreadcrumb>
+}
+
+const Header: FC<IHeaderProps> = ({breadcrumbs}) => {
     const dispatch = useDispatch();
 
     const handelSidebarToggleClick = () => {
@@ -34,7 +39,7 @@ const Header = (props) => {
         </button>
         <TopMenu />
         <UserMenu />
-        <Breadcrumbs />
+        <Breadcrumbs breadcrumbs={breadcrumbs} />
     </header>;
 };
 

@@ -1,21 +1,7 @@
-import {PayloadType} from "../../layout/Payload/types";
-
-export interface ISettingItem {
-    id: number
+export interface IAnalyticsSettings {
     code: string
-    name: string
-    type: PayloadType
-    created_at: string
+    payload: {
+        events: Array<string>
+    }
     updated_at: string
-}
-
-export interface ISetting {
-    id?: number
-    code: string
-    name: string
-    type: PayloadType
-    payload: any
-    built_in?: boolean
-    created_at?: string
-    updated_at?: string
 }

@@ -64,7 +64,7 @@ const PeriodInput: FC<IPeriodInputProps> = (props) => {
     }
 
     return <div className={`d-flex flex-wrap${className ? ' ' + className : ''}`}>
-        <div className="btn-group" role="group" aria-label="Basic example">
+        <div className="btn-group" >
             <button type="button" className={`${getButtonClass('week')} mb-3`} data-value={`week`}
                     onClick={handleClick}>{t("week")}</button>
             <button type="button" className={`${getButtonClass('month')} mb-3`} data-value={`month`}

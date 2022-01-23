@@ -8,9 +8,7 @@ import {IAppState} from "../../../store/reducers/appReducer";
 import {hideSidebar, toggleMinimizedSidebar, toggleSidebarMenuItem} from "../../../store/actions/appActions";
 import useOutsideClick from "../../../hooks/useOutsideClick";
 import {BREAKPOINTS, SCREEN_LG} from "../../../constants";
-import Badge from "../Badge/Badge";
 import SidebarItem from "./SidebarItem";
-import SidebarTitle from "./SidebarTitle";
 import DropdownItem from "./DropdownItem";
 import {adminCan} from "../../../utils/auth";
 
@@ -67,6 +65,22 @@ const Sidebar = (props) => {
             }
 
             {
+                (adminCan("analytics.view")) &&
+                <DropdownItem
+                    label={t("analytics")}
+                    icon="chart"
+                    isOpen={openedMenuItems.includes("analytics")}
+                    code="analytics"
+                    onClick={handleDropdownClick}
+                >
+                    <SidebarItem to="/subscribers-analytics" label={t("newSubscribers")} icon="chart" />
+                    <SidebarItem to="/usages-analytics" label={t("uniqueUsages")} icon="chart" />
+                    <SidebarItem to="/commands-analytics" label={t("commands")} icon="chart" />
+                    <SidebarItem to="/unhandled-analytics" label={t("unhandled")} icon="chart" />
+                </DropdownItem>
+            }
+
+            {
                 (adminCan("admins.manage") || adminCan("roles.manage") || adminCan("roles.view") || adminCan("admins.view")) &&
                 <DropdownItem
                     label={t("access")}
@@ -88,28 +102,17 @@ const Sidebar = (props) => {
 
             {
                 (adminCan("settings.manage") || adminCan("settings.view")) &&
-                <SidebarItem
-                    to="/settings"
+                <DropdownItem
                     label={t("settings")}
                     icon="cog"
-                />
-            }
-
-            {
-                (adminCan("analytics.view")) &&
-                <DropdownItem
-                    label={t("analytics")}
-                    icon="chart"
-                    isOpen={openedMenuItems.includes("analytics")}
-                    code="analytics"
+                    isOpen={openedMenuItems.includes("settings")}
+                    code="settings"
                     onClick={handleDropdownClick}
                 >
-                    <SidebarItem to="/subscribers-analytics" label={t("newSubscribers")} icon="people" />
-                    <SidebarItem to="/usages-analytics" label={t("uniqueUsages")} icon="chart" />
-                    <SidebarItem to="/commands-analytics" label={t("commands")} icon="chart" />
-                    <SidebarItem to="/unhandled-analytics" label={t("unhandled")} icon="chart" />
+                    <SidebarItem to="/settings/analytics" label={t("analytics")} icon="cog" />
                 </DropdownItem>
             }
+
         </ul>
         <button className="c-sidebar-minimizer sidebar-toggler" type="button" onClick={handleMinimizedClick} />
     </div>

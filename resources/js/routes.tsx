@@ -8,14 +8,13 @@ import Admins from "./components/pages/Admins/Admins";
 import Admin from "./components/pages/Admins/Admin";
 import Roles from "./components/pages/Roles/Roles";
 import Role from "./components/pages/Roles/Role";
-import Setting from "./components/pages/Settings/Setting";
-import Settings from "./components/pages/Settings/Settings";
 import NewSubscribers from "./components/pages/Analytics/NewSubscribers";
 import UniqueUsages from "./components/pages/Analytics/UniqueUsages";
 import Commands from "./components/pages/Analytics/Commands";
 import Unhandled from "./components/pages/Analytics/Unhandled";
 import Subscribers from "./components/pages/Subscribers/Subscribers";
 import Subscriber from "./components/pages/Subscribers/Subscriber";
+import AnalyticsSettings from "./components/pages/Settings/AnalyticsSettings";
 
 export default () => {
 
@@ -93,31 +92,14 @@ export default () => {
 
     routes.push(
         {
-            path: '/settings/create',
-            component: Setting as any,
+            path: '/settings/analytics',
+            component: AnalyticsSettings as any,
             breadcrumbs: [
                 {label: "dashboard", url: "/"},
-                {label: "settings", url: "/settings"},
-                {label: "actions.creating"},
+                {label: "settings",},
+                {label: "analytics"},
             ]
         },
-        {
-            path: '/settings/:id',
-            component: Setting as any,
-            breadcrumbs: [
-                {label: "dashboard", url: "/"},
-                {label: "settings", url: "/settings"},
-                {label: ":id"},
-            ]
-        },
-        {
-            path: '/settings',
-            component: Settings as any,
-            breadcrumbs: [
-                {label: "dashboard", url: "/"},
-                {label: "settings"},
-            ]
-        }
     );
 
     routes.push(
@@ -146,6 +128,7 @@ export default () => {
             component: NewSubscribers as any,
             breadcrumbs: [
                 {label: "dashboard", url: "/"},
+                {label: "analytics"},
                 {label: "newSubscribers"},
             ]
         },
@@ -154,6 +137,7 @@ export default () => {
             component: UniqueUsages as any,
             breadcrumbs: [
                 {label: "dashboard", url: "/"},
+                {label: "analytics"},
                 {label: "uniqueUsages"},
             ]
         },
@@ -162,6 +146,7 @@ export default () => {
             component: Commands as any,
             breadcrumbs: [
                 {label: "dashboard", url: "/"},
+                {label: "analytics"},
                 {label: "commands"},
             ]
         },
@@ -170,6 +155,7 @@ export default () => {
             component: Unhandled as any,
             breadcrumbs: [
                 {label: "dashboard", url: "/"},
+                {label: "analytics"},
                 {label: "unhandled"},
             ]
         },

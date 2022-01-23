@@ -25,7 +25,10 @@ Route::middleware(['auth:sanctum', 'status'])->group(
         Route::apiManyResource('roles', 'RoleController');
         Route::get("/permissions", "RoleController@permissions")->name("permissions.index");
 
-        Route::apiManyResource('settings', 'SettingController');
+        Route::get("settings/analytics", "AnalyticsSettingsController@view");
+        Route::put("settings/analytics", "AnalyticsSettingsController@update");
+        Route::post("settings/analytics/clean", "AnalyticsSettingsController@clean");
+        Route::get("settings/analytics/events", "AnalyticsSettingsController@events");
 
         Route::post('subscribers/{subscriber}/block', 'SubscriberController@block');
         Route::apiManyResource('subscribers', 'SubscriberController');

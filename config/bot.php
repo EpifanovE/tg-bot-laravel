@@ -7,4 +7,8 @@ return [
         \App\Bot\Commands\StartCommand::class,
         \App\Bot\KeyboardHandlers\ExampleButton::class,
     ],
+    'events' => [
+        \App\Models\LogEvent\LogEvent::COMMAND_START,
+        \App\Models\LogEvent\LogEvent::COMMAND_UNHANDLED,
+    ],
 ];

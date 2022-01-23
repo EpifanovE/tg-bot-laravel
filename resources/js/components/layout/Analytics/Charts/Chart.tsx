@@ -55,8 +55,6 @@ const Chart: FC<IChartProps> = (props) => {
         filterBar,
     } = props;
 
-    useEffect(() => {console.log(filter)}, [filter])
-
     const chartRef = useRef<ChartJS>(null);
 
     const {t} = useTranslation();

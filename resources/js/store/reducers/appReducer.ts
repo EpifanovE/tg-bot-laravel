@@ -3,10 +3,8 @@ import {
     CLEAR_ALERTS,
     NOTIFICATION_RECEIVED,
     REMOVE_ALERT,
-    SET_BREADCRUMBS,
     SET_LOGOUT_LOADING,
     SET_NOT_FOUND,
-    SET_OPENED_SIDEBAR_MENU_ITEM,
     SET_PREV_PATH,
     SET_SUBMITTING,
     SIDEBAR_HIDE,
@@ -19,13 +17,11 @@ import {
 } from "../constants/appConstants";
 import {IAlert, IBreadcrumb} from "../../types/app";
 import {v4 as uuidv4} from "uuid";
-import {PROFILE_SAVE_FAIL} from "../constants/adminConstants";
 
 export interface IAppState {
     alerts: Array<IAlert>,
     sidebarMinimized: boolean,
     sidebarClosed?: boolean,
-    breadcrumbs: Array<IBreadcrumb>
     prevPath?: string | null,
     submitting: boolean,
     userPanelMenuOpen: boolean,
@@ -37,7 +33,6 @@ export interface IAppState {
 export const initialState: IAppState = {
     alerts: [],
     sidebarMinimized: false,
-    breadcrumbs: [],
     prevPath: null,
     submitting: false,
     userPanelMenuOpen: false,
@@ -52,11 +47,6 @@ const appReducer = (state: IAppState = initialState, action) => {
             return {
                 ...state,
                 prevPath: action.payload,
-            };
-        case SET_BREADCRUMBS :
-            return {
-                ...state,
-                breadcrumbs: action.payload
             };
         case SIDEBAR_TOGGLE :
             return {
