@@ -1,6 +1,6 @@
 import React, {FC} from "react";
 import {useSelector} from "react-redux";
-import {NavLink} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import {IRootState} from "../../../store/reducers/rootReducer";
 import {IAppState} from "../../../store/reducers/appReducer";
 import {useTranslation} from "react-i18next";
@@ -13,6 +13,7 @@ interface IBreadcrumbsProps {
 const Breadcrumbs: FC<IBreadcrumbsProps> = ({breadcrumbs}) => {
 
     const {t} = useTranslation();
+    const {id} = useParams();
 
     if (!breadcrumbs || breadcrumbs.length === 0) {
         return <></>
@@ -22,9 +23,8 @@ const Breadcrumbs: FC<IBreadcrumbsProps> = ({breadcrumbs}) => {
         return item.url
             ? <li className="breadcrumb-item" key={index}>
                 <NavLink to={item.url}>{t(item.label)}</NavLink>
-                {/*<a href={item.url}>{t(item.label)}</a>*/}
             </li>
-            : <li className="breadcrumb-item" key={index}>{t(item.label)}</li>
+            : <li className="breadcrumb-item" key={index}>{item.label === ":id" ? id : t(item.label)}</li>
     });
 
 

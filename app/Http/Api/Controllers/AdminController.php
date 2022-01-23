@@ -68,12 +68,12 @@ class AdminController extends Controller
     {
         $this->authorize('manage', Admin::class);
 
-        $admin->delete();
+        $this->service->delete($admin);
     }
 
     public function destroyMany(DestroyManyRequest $request) {
         $this->authorize('manage', Admin::class);
-        Admin::destroy($request->validated()['ids']);
+        $this->service->deleteMany($request->validated()['ids']);
     }
 
     protected function filterQueryParams($query, $filter)

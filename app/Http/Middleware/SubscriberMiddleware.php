@@ -7,6 +7,7 @@ namespace App\Http\Middleware;
 use App\Models\Subscriber\Subscriber;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SubscriberMiddleware
 {
@@ -34,11 +35,21 @@ class SubscriberMiddleware
             $subscriber = Subscriber::firstOrCreate(
                 ["tid" => $id],
                 $optional);
+
+            $subscriber->fill($optional);
+            $subscriber->save();
+            $subscriber->refresh();
         }
 
         $request->attributes->add(["subscriber" => $subscriber]);
 
-        return $next($request);
+        Log::notice(print_r($subscriber->blocked, true));
+        if ($subscriber->blocked) {
+            return "";
+        } else {
+            return $next($request);
+        }
+
     }
 
     protected function getUpdateKey(array $data): ?string

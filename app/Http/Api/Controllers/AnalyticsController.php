@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Api\Controllers;
 
-use App\Http\Api\Requests\Analytics\PeriodRequest;
 use App\Http\Api\Requests\ResourceIndexRequest;
 use App\Http\Api\Resources\StandardResourceCollection;
 use App\Models\LogEvent\LogEvent;

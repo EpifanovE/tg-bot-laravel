@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Api\Controllers;
 
-use App\Http\Api\Requests\Admin\PeriodRequest;
+use App\Http\Api\Requests\Admin\RoleRequest;
 use App\Http\Api\Requests\DestroyManyRequest;
 use App\Http\Api\Requests\ResourceIndexRequest;
 use App\Http\Api\Resources\Admin\RoleResource;
@@ -31,7 +31,7 @@ class RoleController extends Controller
         return new RoleResourceCollection($query);
     }
 
-    public function store(PeriodRequest $request)
+    public function store(RoleRequest $request)
     {
         $this->authorize('manage', Role::class);
 
@@ -49,7 +49,7 @@ class RoleController extends Controller
         return new RoleResource($role);
     }
 
-    public function update(PeriodRequest $request, Role $role)
+    public function update(RoleRequest $request, Role $role)
     {
         $this->authorize('manage', Role::class);
 

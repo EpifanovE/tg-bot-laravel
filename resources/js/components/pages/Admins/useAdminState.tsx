@@ -49,14 +49,9 @@ const useAdminState = () => {
                     }
                 })
                 .then(response => {
-                    if (isMounted) {
-                        setAdmin({
-                            ...admin,
-                            password: "",
-                            password_confirmation: "",
-                        });
+                    if (isMounted && response?.data) {
+                        setAdmin(response.data);
                     }
-
                 })
                 .finally(() => {
                     if (isMounted) {

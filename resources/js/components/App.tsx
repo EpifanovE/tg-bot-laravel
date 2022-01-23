@@ -71,7 +71,7 @@ const App = (props) => {
 
     const routeComponents = routes().map(({path, component: Component, isPublic, breadcrumbs}, key) => {
         return isPublic
-            ? <Route path={path} element={<Component/>} key={key}/>
+            ? <Route path={path} element={<Component/>} key={key} />
             : <Route path={path} element={(
                 <RequireAuth>
                     <Wrapper breadcrumbs={breadcrumbs}>
@@ -83,8 +83,8 @@ const App = (props) => {
     });
 
     return <Routes>
+        <Route path={`*`} element={<Page404/>}/>
         {routeComponents}
-        <Route element={<Page404/>}/>
     </Routes>;
 };
 

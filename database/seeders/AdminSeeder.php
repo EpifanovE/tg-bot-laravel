@@ -20,6 +20,7 @@ class AdminSeeder extends Seeder
                     'name' => 'Evgeny Epifanov',
                     'email' => 'workeev@gmail.com',
                     'status' => Status::ACTIVE,
+                    'built_in' => true,
                     'email_verified_at' => now(),
                     'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
                     'remember_token' => Str::random(10),
@@ -30,11 +31,15 @@ class AdminSeeder extends Seeder
             ]
         );
 
+        $permissions = array_map(function ($permissionData) {
+            return $permissionData["code"];
+        }, config("authorization.permissions"));
+
         DB::table("roles")->insert([
             [
                 "key" => "admin",
                 "name" => "Администратор",
-                "permissions" => json_encode(config("authorization.permissions")),
+                "permissions" => json_encode($permissions),
                 "built_in" => true,
             ],
             [
