@@ -30,7 +30,6 @@ class SubscriberService
             $subscriber->admin->save();
         }
 
-
         $subscriber->refresh();
 
         return $subscriber;

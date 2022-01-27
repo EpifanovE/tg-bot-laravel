@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useNavigate} from "react-router-dom";
 import {useApi} from "../../../hooks/useApi";
-import {IAdmin, IAdminItem} from "./types";
+import {IAdmin} from "./types";
 import {STATUS_ACTIVE} from "./helpers";
 import useIsMounted from "../../../hooks/useIsMounted";
 
@@ -9,6 +9,7 @@ const useAdminState = () => {
     const api = useApi();
 
     const {id} = useParams<{id: string}>();
+    const navigate = useNavigate();
 
     const [admin, setAdmin] = useState<IAdmin>({
         name: "",
@@ -20,7 +21,6 @@ const useAdminState = () => {
     });
 
     const [saving, setSaving] = useState(false);
-    const [createdAdminId, setCreatedAdminId] = useState<number>();
 
     const {isMounted} = useIsMounted();
 
@@ -36,7 +36,7 @@ const useAdminState = () => {
                     setAdmin(response.data);
                 }
             })
-    }, []);
+    }, [id]);
 
     const handleSaveClick = () => {
         setSaving(true);
@@ -64,8 +64,8 @@ const useAdminState = () => {
                     data: admin
                 })
                 .then(response => {
-                    if (isMounted) {
-                        setCreatedAdminId(response?.data.id);
+                    if (response?.data?.id) {
+                        navigate(`/admins/${response.data.id}`);
                     }
                 })
                 .finally(() => {
@@ -107,7 +107,6 @@ const useAdminState = () => {
         handleRolesChange,
         handleStatusChange,
         saving,
-        createdAdminId,
     }
 };
 

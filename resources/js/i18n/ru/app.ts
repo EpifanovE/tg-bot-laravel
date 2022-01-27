@@ -51,7 +51,8 @@ export default {
         saveSuccess: "Сохранено.",
         createSuccess: "Создано.",
         noAccess: "У вас нет доступа к этому содержимому.",
-        analyticsCleaned: "Удалено записей: {{arg}}."
+        analyticsCleaned: "Удалено записей: {{arg}}.",
+        publishConfirm: "Вы уверены, что хотите разослать сообщение немедленно?",
     },
     validation: {
         required: "Это поле обязательно",
@@ -68,6 +69,9 @@ export default {
         pending: "Ожидание",
         active: "Активно",
         disabled: "Отключено",
+        draft: "Черновик",
+        published: "Опубликовано",
+        planned: "Запланировано",
     },
     permissions: {
         "admins.manage" : "Управление администраторами",
@@ -80,12 +84,15 @@ export default {
         "subscribers.view" : "Просмотр подписчиков",
         "analytics.view": "Просмотр аналитики",
         "analytics.manage": "Управление аналитикой",
+        "messages.view": "Просмотр сообщений",
+        "messages.manage": "Управление сообщениями",
     },
     permissionsGroups: {
         "admins" : "Администраторы",
         "settings" : "Настройки",
         "subscribers" : "Подписчики",
         "analytics": "Аналитика",
+        "messages": "Сообщения",
     },
     actions: {
         choose: "Выберите",
@@ -99,6 +106,8 @@ export default {
     },
     errors: {
         fieldIsEmpty: "{{field}} не может быть пустым.",
+        adminNotDefined: "Администратор не указан.",
+        timeNotDefined: "Время не установлено.",
     },
     events: {
         c_start: "Команда /start",
@@ -109,6 +118,7 @@ export default {
     rememberMe: "Запомнить меня",
     createdAt: "Создано",
     updatedAt: "Обновлено",
+    plannedAt: "Запланировано",
     search: "Поиск",
     activeAndDisabled: "Активные и отключенные",
     activeOnly: "Только активные",
@@ -155,4 +165,22 @@ export default {
     maintenance: "Обслуживание",
     eventsToListen: "Отслеживание событий",
     analyticsDeleting: "Удаление аналитики",
+    messagesLabel: "Сообщения",
+    title: "Заголовок",
+    saveModes: {
+        draft: "Сохранить черновик",
+        publish: "Опубликовать сразу",
+        planned: "Запланировать",
+        test: "Отправить админимтратору",
+    },
+    scheduler: "Планировщик",
+    chooseAdmin: "Выбор администратора",
+    message: "Сообщение",
+    parseMode: "Режим текста",
+    publishTime: "Время публикации",
+    messagesList: "Рассылка",
+    publishedAt: "Опубликовано",
+    images: "Изображения",
+    upload: "Загрузить",
+    uploadedFiles: "Загруженные файлы",
 };

@@ -108,6 +108,104 @@ tr.helperContainerClass > td {
   }
 }
 
+.ImageInput {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  background-clip: padding-box;
+  border: 1px solid #d8dbe0;
+  color: #768192;
+  background-color: #fff;
+  border-radius: 0.25rem;
+}
+.ImageInput__UploadArea {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  background-color: #ebedef;
+  border: 1px dashed #262d36;
+  padding: 15px;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+.ImageInput__UploadArea:last-child {
+  margin-bottom: 0;
+}
+.ImageInput__Upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+}
+.ImageInput__UploadIcon {
+  display: block;
+  margin: 0 0 10px 0;
+  width: auto !important;
+  height: auto !important;
+  font-size: 2rem !important;
+}
+.ImageInput__UploadTitle {
+  color: #768192;
+}
+.ImageInput__Input {
+  display: none;
+}
+.ImageInput__SubTitle {
+  margin-bottom: 0.5rem;
+  color: #3c4b64;
+}
+.ImageInput__Uploaded {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.ImageInputItem {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: #fff;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border: 1px solid #d8dbe0;
+  cursor: pointer;
+}
+.ImageInputItem__Src {
+  max-width: 100%;
+}
+.ImageInputItem__Icon {
+  width: 2rem !important;
+  height: 2rem !important;
+  font-size: 2rem !important;
+}
+.ImageInputItem__Overlay {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}
+.ImageInputItem:hover .ImageInputItem__Overlay {
+  display: block;
+}
+.ImageInputItem__Actions {
+  position: absolute;
+  display: none;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+}
+.ImageInputItem:hover .ImageInputItem__Actions {
+  display: flex;
+}
 html {
   font-size: 16px;
 }

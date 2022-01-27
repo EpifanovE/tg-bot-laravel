@@ -16,13 +16,28 @@ interface IReferenceSelectProps {
     resettable?: boolean
     disabled?: boolean
     required?: boolean
-    className?: string
+    className?: string,
+    filter?: {[key: string] : string | number}
 }
 
 const ReferenceSelect: FC<IReferenceSelectProps> = (props) => {
 
-    const {resource, value, onChange, label, placeholder, multiple, valueField, labelField, resettable, labelRender
-        , disabled, required, className} = props;
+    const {
+        resource,
+        value,
+        onChange,
+        label,
+        placeholder,
+        multiple,
+        valueField,
+        labelField,
+        resettable,
+        labelRender,
+        disabled,
+        required,
+        className,
+        filter,
+    } = props;
 
     const api = useApi();
 
@@ -33,7 +48,7 @@ const ReferenceSelect: FC<IReferenceSelectProps> = (props) => {
 
     useEffect(() => {
         api
-            .getMany<{data: Array<any>}>(resource, {paginate: 0})
+            .getMany<{data: Array<any>}>(resource, {paginate: 0, filter: filter})
             .then(response => {
                 if (!response?.data) return;
 

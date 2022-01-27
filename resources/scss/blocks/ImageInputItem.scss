@@ -1,0 +1,53 @@
+.ImageInputItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: #fff;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    border: 1px solid #d8dbe0;
+    cursor: pointer;
+
+    &__Src {
+        max-width: 100%;
+    }
+
+    &__Icon {
+        width: 2rem !important;
+        height: 2rem !important;
+        font-size: 2rem !important;
+    }
+
+    &__Overlay {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0,0,0,.7);
+        z-index: 1;
+    }
+
+    &:hover &__Overlay {
+        display: block;
+    }
+
+    &__Actions {
+        position: absolute;
+        display: none;
+        top: 10px;
+        right: 10px;
+        z-index: 2;
+    }
+
+    &:hover &__Actions {
+        display: flex;
+    }
+
+    &__Action {
+
+    }
+}

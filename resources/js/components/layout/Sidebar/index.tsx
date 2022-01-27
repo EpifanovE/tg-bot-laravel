@@ -65,6 +65,15 @@ const Sidebar = (props) => {
             }
 
             {
+                (adminCan("messages.manage") || adminCan("messages.view")) &&
+                <SidebarItem
+                    to="/messages"
+                    label={t("messagesList")}
+                    icon="envelope-closed"
+                />
+            }
+
+            {
                 (adminCan("analytics.view")) &&
                 <DropdownItem
                     label={t("analytics")}

@@ -99,4 +99,9 @@ class Admin extends Authenticatable
             ->orWhere("email", "LIKE", '%' . $search . '%')
             ->orWhere("id", "LIKE", '%' . $search . '%');
     }
+
+    public function scopeHasSubscriber(Builder $query)
+    {
+        $query->whereNotNull("subscriber_id");
+    }
 }

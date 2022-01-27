@@ -11,7 +11,7 @@ Route::post('/password/reset', 'Auth\ForgotPasswordController@reset')
 
 Route::get('/refresh-csrf', 'Auth\AuthController@csrfToken')->name('csrf');
 
-Route::get("/test", "AnalyticsController@test");
+//Route::get("attachments/{attachment}", "AttachmentController@show");
 
 Route::middleware(['auth:sanctum', 'status'])->group(
     function () {
@@ -32,6 +32,10 @@ Route::middleware(['auth:sanctum', 'status'])->group(
 
         Route::post('subscribers/{subscriber}/block', 'SubscriberController@block');
         Route::apiManyResource('subscribers', 'SubscriberController');
+
+        Route::apiManyResource('messages', 'MessageController');
+
+        Route::apiManyResource('attachments', 'AttachmentController');
 
         Route::get("/analytics/newSubscribers", "AnalyticsController@newSubscribers");
         Route::get("/analytics/newSubscribersTable", "AnalyticsController@newSubscribersTable");

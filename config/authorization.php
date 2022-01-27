@@ -42,5 +42,21 @@ return [
             "group" => "analytics",
             "code" => "analytics.manage",
         ],
+        [
+            "group" => "messages",
+            "code" => "messages.view",
+        ],
+        [
+            "group" => "messages",
+            "code" => "messages.manage",
+        ],
+        [
+            "group" => "attachments",
+            "code" => "attachments.view",
+        ],
+        [
+            "group" => "attachments",
+            "code" => "attachments.manage",
+        ],
     ],
 ];

@@ -1,0 +1,62 @@
+.ImageInput {
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: .875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 1px solid #d8dbe0;
+    color: #768192;
+    background-color: #fff;
+    border-radius: 0.25rem;
+
+    &__UploadArea {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        background-color: #ebedef;
+        border: 1px dashed #262d36;
+        padding: 15px;
+        gap: 15px;
+        margin-bottom: 15px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    &__Upload {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 auto;
+    }
+
+    &__UploadIcon {
+        display: block;
+        margin: 0 0 10px 0;
+        width: auto !important;
+        height: auto !important;
+        font-size: 2rem !important;
+    }
+
+    &__UploadTitle {
+        color: #768192;
+    }
+
+    &__Input {
+        display: none;
+    }
+
+    &__SubTitle {
+        margin-bottom: 0.5rem;
+        color: #3c4b64;
+    }
+
+    &__Uploaded {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+}

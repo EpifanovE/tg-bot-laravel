@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useApi} from "../../../hooks/useApi";
 import {IPermission, IPermissionsList, IRole} from "./types";
 import useIsMounted from "../../../hooks/useIsMounted";
@@ -7,8 +7,9 @@ import useIsMounted from "../../../hooks/useIsMounted";
 const useRoleState = () => {
     const api = useApi();
     const {id} = useParams<{id: string}>();
+    const navigate = useNavigate();
+
     const [saving, setSaving] = useState(false);
-    const [createdRoleId, setCreatedRoleId] = useState<number>();
     const [permissionsList, setPermissionsList] = useState<IPermissionsList>({
         groups: [],
         items: []
@@ -33,7 +34,7 @@ const useRoleState = () => {
                     setRole(response.data)
                 }
             })
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         api
@@ -90,7 +91,9 @@ const useRoleState = () => {
 
                 })
                 .finally(() => {
-                    setSaving(false);
+                    if (isMounted) {
+                        setSaving(false);
+                    }
                 });
         } else {
             api
@@ -98,11 +101,14 @@ const useRoleState = () => {
                     data: role
                 })
                 .then(response => {
-                    setCreatedRoleId(response?.data.id);
-                    setSaving(false);
+                    if (response?.data?.id) {
+                        navigate(`/roles/${response.data.id}`);
+                    }
                 })
                 .finally(() => {
-                    setSaving(false);
+                    if (isMounted) {
+                        setSaving(false);
+                    }
                 });
         }
     };
@@ -139,7 +145,6 @@ const useRoleState = () => {
     return {
         role,
         saving,
-        createdRoleId,
         permissionsList,
         handleTextChange,
         handleSaveClick,

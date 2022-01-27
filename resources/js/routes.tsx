@@ -15,6 +15,8 @@ import Unhandled from "./components/pages/Analytics/Unhandled";
 import Subscribers from "./components/pages/Subscribers/Subscribers";
 import Subscriber from "./components/pages/Subscribers/Subscriber";
 import AnalyticsSettings from "./components/pages/Settings/AnalyticsSettings";
+import Messages from "./components/pages/Messages/Messages";
+import Message from "./components/pages/Messages/Message";
 
 export default () => {
 
@@ -118,6 +120,35 @@ export default () => {
             breadcrumbs: [
                 {label: "dashboard", url: "/"},
                 {label: "subscribers"},
+            ]
+        }
+    );
+
+    routes.push(
+        {
+            path: '/messages/create',
+            component: Message as any,
+            breadcrumbs: [
+                {label: "dashboard", url: "/"},
+                {label: "messagesList", url: "/messages"},
+                {label: "actions.creating"},
+            ]
+        },
+        {
+            path: '/messages/:id',
+            component: Message as any,
+            breadcrumbs: [
+                {label: "dashboard", url: "/"},
+                {label: "messagesList", url: "/messages"},
+                {label: ":id"},
+            ]
+        },
+        {
+            path: '/messages',
+            component: Messages as any,
+            breadcrumbs: [
+                {label: "dashboard", url: "/"},
+                {label: "messagesList"},
             ]
         }
     );

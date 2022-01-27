@@ -27,16 +27,19 @@ const Role: FC<IRoleProps> = () => {
     const {t} = useTranslation();
     const {locale} = useSelector<IRootState, IAdminState>(state => state.admin);
 
-    const {role, saving, createdRoleId, permissionsList, handleTextChange, handleSaveClick, handlePermissionClick} = useRoleState();
+    const {
+        role,
+        saving,
+        permissionsList,
+        handleTextChange,
+        handleSaveClick,
+        handlePermissionClick,
+    } = useRoleState();
 
     const {disallow, messageComponent} = useAccess(["roles.manage", "roles.view"]);
 
     if (disallow) {
         return messageComponent;
-    }
-
-    if (createdRoleId) {
-        return <Navigate to={`/roles/${createdRoleId}`}/>
     }
 
     return <>

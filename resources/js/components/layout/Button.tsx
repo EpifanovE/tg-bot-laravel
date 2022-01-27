@@ -10,15 +10,30 @@ interface IButtonProps {
     size?: string
     disabled?: boolean
     spinner?: boolean
+    attrs?: {[key: string] : string}
 }
 
-const Button: FC<IButtonProps> = ({onClick, color, type, className, href, children, size, disabled, spinner}) => {
+const Button: FC<IButtonProps> = (props) => {
+
+    const {
+        onClick,
+        color,
+        type,
+        className,
+        href,
+        children,
+        size,
+        disabled,
+        spinner,
+        attrs: attrsProp,
+    } = props;
+
     const Tag = href ? "a" : "button";
     const attrs = href ? {href: href} : {type: type ? type : "button"};
 
     const classes = `btn${color ? " btn-" + color : ""}${size ? " btn-" + size : ""}${className ? " " + className : ""}`;
 
-    return <Tag {...attrs} onClick={onClick} className={classes} disabled={disabled}>
+    return <Tag {...attrs} onClick={onClick} className={classes} disabled={disabled} {...attrsProp}>
         {children}
         {
             spinner &&

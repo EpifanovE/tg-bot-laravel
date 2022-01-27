@@ -18,7 +18,7 @@ const useSubscriberState = () => {
 
     useEffect(() => {
         fetchSubscriber();
-    }, []);
+    }, [id]);
 
     const fetchSubscriber = () => {
         if (!id) return;

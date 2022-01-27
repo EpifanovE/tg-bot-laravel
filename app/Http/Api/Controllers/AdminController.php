@@ -86,6 +86,10 @@ class AdminController extends Controller
             $query->search($filter["search"]);
         }
 
+        if (!empty($filter["has_subscriber"])) {
+            $query->hasSubscriber();
+        }
+
         return $query;
     }
 }
