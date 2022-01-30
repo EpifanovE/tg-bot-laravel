@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\UseCases\Message;
 
 use App\Models\Admin\Admin;
+use App\Models\Attachment\Attachment;
 use App\Models\Message\Message;
 use App\UseCases\Attachment\AttachmentService;
 use Carbon\Carbon;
@@ -36,18 +37,38 @@ class MessageService
 
     public function update(Message $message, array $data): Message
     {
-        $message->fill($data["message"]);
-        $message->save();
-        $message->refresh();
+        $data["message"]["attachments_sort"] = $data["message"]["attachments_ids"];
 
-        $this->handleMessage($message, $data);
+        $message->fill($data["message"]);
+
+        $attachmentsIds = $message->attachments->pluck("id")->toArray();
+
+        if (count($attachmentsIds) > 0) {
+            $attachmentsIdsToDelete = array_filter($attachmentsIds, function ($id) use ($data) {
+                return !in_array($id, $data["message"]["attachments_ids"] ?? []);
+            });
+            Attachment::destroy($attachmentsIdsToDelete);
+        }
 
         if (!empty($data["files"])) {
             $filesCollection = $this->attachmentService->createMany($data);
             $message->attachments()->saveMany($filesCollection);
+
+            $ids = $filesCollection->pluck("id")->toArray();
+
+            $newSort = array_filter($message->attachments_sort, function ($item) use ($ids) {
+                return !in_array($item, $ids);
+            });
+
+            $newSort = array_merge($newSort, $ids);
+
+            $message->attachments_sort = $newSort;
         }
 
+        $message->save();
         $message->refresh();
+
+        $this->handleMessage($message, $data);
 
         return $message;
     }

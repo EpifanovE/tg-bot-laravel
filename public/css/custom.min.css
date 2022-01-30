@@ -111,7 +111,7 @@ tr.helperContainerClass > td {
 .ImageInput {
   display: block;
   width: 100%;
-  padding: 0.375rem 0.75rem;
+  padding: 10px;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
@@ -142,13 +142,14 @@ tr.helperContainerClass > td {
 }
 .ImageInput__UploadIcon {
   display: block;
-  margin: 0 0 10px 0;
+  margin: 0 0 5px 0;
   width: auto !important;
   height: auto !important;
   font-size: 2rem !important;
 }
 .ImageInput__UploadTitle {
   color: #768192;
+  line-height: 1;
 }
 .ImageInput__Input {
   display: none;
@@ -206,6 +207,23 @@ tr.helperContainerClass > td {
 .ImageInputItem:hover .ImageInputItem__Actions {
   display: flex;
 }
+.Action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
+  background-color: #ffffff;
+  border: none;
+}
+.Action:hover {
+  opacity: 0.8;
+}
+.Action__Icon {
+  fill: #333333;
+  width: 16px;
+  height: 16px;
+}
+
 html {
   font-size: 16px;
 }

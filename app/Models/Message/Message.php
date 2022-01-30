@@ -29,11 +29,13 @@ class Message extends Model
         "body",
         "status",
         "parse_mode",
+        "attachments_sort",
         "published_at",
     ];
 
     protected $casts = [
         "published_at" => "datetime",
+        "attachments_sort" => "array",
     ];
 
     public static function boot()
@@ -81,6 +83,25 @@ class Message extends Model
         foreach ($subscribersIds as $id) {
             TelegramSendMessage::dispatch($this, $id);
         }
+    }
+
+    public function sortedAttachments()
+    {
+        if (empty($this->attachments_sort) || count($this->attachments_sort) === 0 || $this->attachments->count() === 0) {
+            return $this->attachments;
+        }
+
+        return $this->attachments->sort(function ($a, $b) {
+            $aIndex = array_search($a->id, $this->attachments_sort);
+            $bIndex = array_search($b->id, $this->attachments_sort);
+
+            if ( ! $aIndex && ! $bIndex) {
+                return 0;
+            }
+
+            return $aIndex <=> $bIndex;
+        });
+
     }
 
     public function task(): MorphOne

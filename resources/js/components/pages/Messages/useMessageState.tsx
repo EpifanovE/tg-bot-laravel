@@ -6,7 +6,7 @@ import useIsMounted from "../../../hooks/useIsMounted";
 import moment, {Moment} from "moment";
 import {errorAlert, successAlert} from "../../../utils/alerts";
 import {useTranslation} from "react-i18next";
-import {IFileResponse} from "../../inputs/ImageInput/types";
+import {IFileResponse, IFileToUpload} from "../../inputs/ImageInput/types";
 
 const useMessageState = () => {
 
@@ -27,7 +27,7 @@ const useMessageState = () => {
     const [saveMode, setSaveMode] = useState<SaveMode>(SaveMode.Draft);
     const [adminIds, setAdminIds] = useState<Array<string | number>>([]);
     const [uploadedFiles, setUploadedFiles] = useState<Array<IFileResponse>>([]);
-    const [filesToUpload, setFilesToUpload] = useState<FileList>();
+    const [filesToUpload, setFilesToUpload] = useState<Array<IFileToUpload>>();
 
     const {isMounted} = useIsMounted();
 
@@ -36,8 +36,11 @@ const useMessageState = () => {
     }, [id]);
 
     useEffect(() => {
-        getAttachments();
-    }, [message.attachments_ids])
+        setMessage({
+            ...message,
+            attachments_ids: uploadedFiles.map(file => file.id),
+        })
+    }, [uploadedFiles])
 
     const getMessage = async () => {
         if (!id) return;
@@ -54,10 +57,14 @@ const useMessageState = () => {
         if (response.data.status === Status.Planned && !!response.data.run_at) {
             setSaveMode(SaveMode.Planned);
         }
+
+        if (!!response.data.attachments_ids?.length) {
+            getAttachments(response.data.attachments_ids);
+        }
     }
 
-    const getAttachments = async () => {
-        if (!message.attachments_ids?.length) {
+    const getAttachments = async (ids: Array<number>) => {
+        if (!ids.length) {
             return;
         }
 
@@ -65,11 +72,18 @@ const useMessageState = () => {
             .getMany<{ data: Array<IFileResponse> }>("attachments", {
                 paginate: 0,
                 filter: {
-                    ids: message.attachments_ids,
+                    ids: ids,
                 }
             })
 
-        setUploadedFiles(attachmentsResponse?.data.data || []);
+        setUploadedFiles(attachmentsResponse?.data.data.sort((a, b) => {
+
+            const indexA = ids.indexOf(a.id);
+            const indexB = ids.indexOf(b.id);
+
+            return indexA - indexB;
+
+        }) || []);
     }
 
     const prepareFormData = (): FormData => {
@@ -80,8 +94,8 @@ const useMessageState = () => {
         formData.append("save_mode", saveMode);
 
         if (!!filesToUpload?.length) {
-            Array.prototype.forEach.call(filesToUpload, file => {
-                formData.append("files[]", file);
+            filesToUpload.forEach(file => {
+                formData.append("files[]", file.file);
             })
         }
 
@@ -122,6 +136,7 @@ const useMessageState = () => {
             })
             .then(response => {
                 successAlert(t("messages.saveSuccess"));
+
                 if (!message.id && response.data.data.id) {
                     navigate(`/messages/${response.data.data.id}`);
                 } else {
@@ -131,6 +146,10 @@ const useMessageState = () => {
                     });
 
                     setFilesToUpload(undefined);
+
+                    if (response.data?.data?.attachments_ids) {
+                        getAttachments(response.data.data.attachments_ids);
+                    }
                 }
             })
             .finally(() => {
@@ -185,10 +204,23 @@ const useMessageState = () => {
         })
     }
 
-    const handleFilesToUploadChange = (e: React.FormEvent<HTMLInputElement>) => {
-        if (e.currentTarget?.files) {
-            setFilesToUpload(e.currentTarget.files)
-        }
+    const handleFilesToUploadChange = (files: Array<IFileToUpload>) => {
+        setFilesToUpload([
+            ...(filesToUpload ? filesToUpload : []),
+            ...files,
+        ])
+    }
+
+    const handleFileToUploadDeleteClick = (id: string) => {
+        setFilesToUpload(filesToUpload?.filter(file => file.id !== id))
+    }
+
+    const handleUploadedFileDeleteCLick = (id: string) => {
+        setUploadedFiles(uploadedFiles.filter(file => file.id.toString() !== id));
+        setMessage({
+            ...message,
+            attachments_ids: message.attachments_ids?.filter(attachmentId => attachmentId.toString() !== id)
+        })
     }
 
     return {
@@ -206,6 +238,9 @@ const useMessageState = () => {
         handleAdminIdsChange,
         handleChangeRunAt,
         handleFilesToUploadChange,
+        setUploadedFiles,
+        handleFileToUploadDeleteClick,
+        handleUploadedFileDeleteCLick,
     }
 };
 

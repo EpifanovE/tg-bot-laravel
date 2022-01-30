@@ -14,6 +14,15 @@ class Attachment extends Model
         "mime", "ext",
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function(Attachment $attachment) {
+            Storage::disk("uploads")->deleteDirectory($attachment->id);
+        });
+    }
+
     public function getThumbContentAttribute()
     {
         if (!$this->isImage()) {

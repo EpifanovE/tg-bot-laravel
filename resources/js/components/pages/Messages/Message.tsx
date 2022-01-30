@@ -44,6 +44,9 @@ const Message: FC = () => {
         handleAdminIdsChange,
         handleChangeRunAt,
         handleFilesToUploadChange,
+        setUploadedFiles,
+        handleFileToUploadDeleteClick,
+        handleUploadedFileDeleteCLick,
     } = useMessageState();
 
     const {disallow, messageComponent} = useAccess(["messages.manage", "messages.view"]);
@@ -125,6 +128,9 @@ const Message: FC = () => {
                                 filesToUpload={filesToUpload}
                                 onChange={handleFilesToUploadChange}
                                 uploadedFiles={uploadedFiles}
+                                setUploadedFiles={setUploadedFiles}
+                                onToUploadDeleteClick={handleFileToUploadDeleteClick}
+                                onUploadedDeleteClick={handleUploadedFileDeleteCLick}
                             />
                         </CardBody>
                     </Card>

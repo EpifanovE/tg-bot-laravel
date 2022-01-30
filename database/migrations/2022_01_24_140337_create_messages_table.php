@@ -14,6 +14,7 @@ class CreateMessagesTable extends Migration
             $table->string("body", 4096);
             $table->string("parse_mode", 16);
             $table->string("status", 16);
+            $table->json("attachments_sort")->nullable();
             $table->timestamp("published_at")->nullable();
             $table->timestamps();
         });

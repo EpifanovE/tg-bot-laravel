@@ -26,7 +26,7 @@ class MessageRequest extends FormRequest
     {
         $this->merge([
             'message' => json_decode($this->input('message'), true),
-            'admin_ids' => json_decode($this->input('admin_ids'), true)
+            'admin_ids' => json_decode($this->input('admin_ids'), true),
         ]);
 
         return $this->all();
@@ -48,6 +48,8 @@ class MessageRequest extends FormRequest
             "message.name" => ["required", "string", ],
             "message.parse_mode" => ["required", Rule::in(["html", "md",])],
             "message.run_at" => ["nullable", "string",],
+            "attachments_ids" => ["nullable", "array",],
+            "attachments_ids.*" => ["integer",],
             "files" => ["array", "nullable",],
             "files.*" => ["image",],
         ];

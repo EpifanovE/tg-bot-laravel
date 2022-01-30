@@ -16,7 +16,7 @@ class MessageResource extends JsonResource
             "body" => $this->body,
             "status" => $this->status,
             "parse_mode" => $this->parse_mode,
-            "attachments_ids" => $this->attachments->pluck("id"),
+            "attachments_ids" => $this->sortedAttachments()->pluck("id"),
             "run_at" => $this->task()->exists() ? $this->task->run_at : null,
             "published_at" => $this->published_at,
             "created_at" => $this->created_at,

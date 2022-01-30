@@ -4,8 +4,8 @@ export const isImage = (file: any): boolean => {
         return true;
     }
 
-    if (!!file.type) {
-        return file.type?.includes("image/");
+    if (!!file?.file?.type) {
+        return file.file.type?.includes("image/");
     }
 
     if (!!file.mime) {
